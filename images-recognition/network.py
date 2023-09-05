@@ -26,32 +26,39 @@ import numpy as np
 
 class Network(object):
 
-    def __init__(self, sizes):
-        """The list ``sizes`` contains the number of neurons in the
-        respective layers of the network.  For example, if the list
-        was [2, 3, 1] then it would be a three-layer network, with the
-        first layer containing 2 neurons, the second layer 3 neurons,
-        and the third layer 1 neuron.  The biases and weights for the
-        network are initialized randomly, using a Gaussian
-        distribution with mean 0, and variance 1.  Note that the first
-        layer is assumed to be an input layer, and by convention we
-        won't set any biases for those neurons, since biases are only
-        ever used in computing the outputs from later layers. """
 
-        """Esta función permite inicializar nuestra red. Como parámetros, 
-        damos una lista, en la cual cada número corresponde al número de 
-        neuronas en la capa."""
-        """Usamos este para reconocer las cifras a partir de fotos. Cada 
-        foto se compone de 784, por lo tanto, nuestro primero capa está 
-        componada de 784 neuronas. En la salida queremos saber cuál cifra 
-        está en la foto, en consecuencia necesitamos 10 salidas: 0,1,...,9.
-        No tenemos informaciones sobre las capas ocultas, entonces podemos 
-        elegir el número de capas y el número de neuronas en cada capa"""        
-        self.num_layers = len(sizes) #este valor coresponde al numero de capas
-        self.sizes = sizes           
-        self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
+    def __init__(self, sizes):
+
+        """Esta función permite inicializar nuestra red. Como parámetros, damos 
+        una lista, en la cual, cada número corresponde al número de neuronas en 
+        la capa. Por ejemplo, size = [5, 10, 7, 3] es una red que tiene 5 neuronas 
+        en su capa entrada, 3 en su capa de salida. Además, tiene 2 capas ocultadas, 
+        con 10 y 7 neuronas"""         
+
+        self.num_layers = len(sizes) # usamos 'len' para obtener el número 
+                                     # de elementos en la lista en parámetro. 
+                                     # Eso corresponde al número de capas
+        self.sizes = sizes # esta variable coresponde a la lista que esta 
+                           # en parametro y que contiene el numero de neuronas 
+                           # por cada capa
+        """La funcion 'np.random.randn(a,b)' permite crear y llenar una matrice, 
+        de talla a x b, con nombres aleatorios entre 0 y 1.
+        Usemos este funcion para crear matricies con valores aleatories. Hacemos 
+        esto, porque al principio la red no esta entrenada, no sabemos nada de las 
+        valores de biases y de weigths (solo que deben ser entre 0 y 1), por lo 
+        tanto ponemos valores aleatorias entre 0 y 1"""
+        self.biases = [np.random.randn(y, 1) for y in sizes[1:]] 
+                # este variable es una lista que se compone de vectores de talla 
+                # de los números de la lista, a partir del segundo elemento. Esos 
+                # vectores corresponden a los biases de cada capa, excepto la 
+                # primera, porque es la entrada, entonces no tiene biases.          
         self.weights = [np.random.randn(y, x)
                         for x, y in zip(sizes[:-1], sizes[1:])]
+                # este variable es una lista que se compone de matrices de talla 
+                # (talla de capa actual x talla de la proxima capa), a partir del 
+                # segundo elemento. Esos matricies corresponden a los weigths de 
+                # cada capa, excepto la ultima, porque es la salida, entonces no 
+                # tiene weigths.
 
     def feedforward(self, a):
         """Esta función permite de recorrer la red capa por capa. 
@@ -63,18 +70,18 @@ class Network(object):
         después del paso en la capa
         """
         for b, w in zip(self.biases, self.weights): 
-            """Gracias a este bucle 'for' recorremos cada capa (con el b 
-            en self.biaises) y cada neurona (con el w en self.weights). Por 
-            cada neurona obtenemos b : su bias (valor escalar) y w : los 
-            weigths de las enlaces que entran en la neurona (vector)"""
+                # Gracias a este bucle 'for' recorremos cada capa (con el b 
+                # en self.biaises) y cada neurona (con el w en self.weights). Por 
+                # cada neurona obtenemos b : su bias (valor escalar) y w : los 
+                # weigths de las enlaces que entran en la neurona (vector)
             z = np.dot(w, a)+b
-            """Calculemos 'z' : el valor de entrada gracias a 'np.dot' que 
-            permite multiplicar matrices. Entonces hacemos el producto entre 
-            'a' (la salida de las neuronas anterior) y 'w' (los weigths) y 
-            después añadimos 'b' (el bias)"""
+                    # Calculemos 'z' : el valor de entrada gracias a 'np.dot' que 
+                    # permite multiplicar matrices. Entonces hacemos el producto entre 
+                    # 'a' (la salida de las neuronas anterior) y 'w' (los weigths) y 
+                    # después añadimos 'b' (el bias)"""
             a = sigmoid(z)
-            """Al final calculemos la salida de la capa con la función sigmoid 
-            que veremos después"""
+                    #Al final calculemos la salida de la capa con la función sigmoid 
+                    #que veremos después"""
         return a
 
     def SGD(self, training_data, epochs, mini_batch_size, eta,
