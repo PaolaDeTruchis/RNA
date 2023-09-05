@@ -37,23 +37,44 @@ class Network(object):
         layer is assumed to be an input layer, and by convention we
         won't set any biases for those neurons, since biases are only
         ever used in computing the outputs from later layers. """
-        self.num_layers = len(sizes)
-        self.sizes = sizes
+
+        """Esta función permite inicializar nuestra red. Como parámetros, 
+        damos una lista, en la cual cada número corresponde al número de 
+        neuronas en la capa."""
+        """Usamos este para reconocer las cifras a partir de fotos. Cada 
+        foto se compone de 784, por lo tanto, nuestro primero capa está 
+        componada de 784 neuronas. En la salida queremos saber cuál cifra 
+        está en la foto, en consecuencia necesitamos 10 salidas: 0,1,...,9.
+        No tenemos informaciones sobre las capas ocultas, entonces podemos 
+        elegir el número de capas y el número de neuronas en cada capa"""        
+        self.num_layers = len(sizes) #este valor coresponde al numero de capas
+        self.sizes = sizes           
         self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
         self.weights = [np.random.randn(y, x)
                         for x, y in zip(sizes[:-1], sizes[1:])]
 
     def feedforward(self, a):
-        """Esta función permite de recorrer la red capa por capa. Los domas dos parámetros:
+        """Esta función permite de recorrer la red capa por capa. 
+        Los domas dos parámetros:
                 1. 'self' que contiene las valores de weights y biases
-                2. 'a' un vector que contiene los valores que entran en este
-                    capa, es decir, el resultado de las capas anteriores, que 
-                    entran en este capa
-        devuelve el valor de activación, es decir, el valor obtenido después 
-        del paso en la capa
+                2. 'a' un vector que contiene los valores que entran en 
+                    este capa, es decir, la salida de las capas anteriores
+        devuelve el valor de activación 'a', es decir, el valor obtenido 
+        después del paso en la capa
         """
-        for b, w in zip(self.biases, self.weights): #con este for recuperamos todos las valores de w y b
-            a = sigmoid(np.dot(w, a)+b)
+        for b, w in zip(self.biases, self.weights): 
+            """Gracias a este bucle 'for' recorremos cada capa (con el b 
+            en self.biaises) y cada neurona (con el w en self.weights). Por 
+            cada neurona obtenemos b : su bias (valor escalar) y w : los 
+            weigths de las enlaces que entran en la neurona (vector)"""
+            z = np.dot(w, a)+b
+            """Calculemos 'z' : el valor de entrada gracias a 'np.dot' que 
+            permite multiplicar matrices. Entonces hacemos el producto entre 
+            'a' (la salida de las neuronas anterior) y 'w' (los weigths) y 
+            después añadimos 'b' (el bias)"""
+            a = sigmoid(z)
+            """Al final calculemos la salida de la capa con la función sigmoid 
+            que veremos después"""
         return a
 
     def SGD(self, training_data, epochs, mini_batch_size, eta,
