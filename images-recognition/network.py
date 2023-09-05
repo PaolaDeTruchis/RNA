@@ -11,10 +11,18 @@ and omits many desirable features.
 
 #### Libraries
 # Standard library
+"""Al principio, la red no está entrenada, por lo tanto, vamos a necesitar 
+valores aleatorios para los w (weights) y los b (biases). Para obtener esos 
+valores aleatorios usamos la librería random"""
 import random
 
+
 # Third-party libraries
+"""Las redes neuronales artificiales se implementan con matrices. Por lo 
+tanto, para implementar el código vamos a necesitar la librería numpy"""
 import numpy as np
+
+
 
 class Network(object):
 
@@ -36,8 +44,15 @@ class Network(object):
                         for x, y in zip(sizes[:-1], sizes[1:])]
 
     def feedforward(self, a):
-        """Return the output of the network if ``a`` is input."""
-        for b, w in zip(self.biases, self.weights):
+        """Esta función permite de recorrer la red capa por capa. Los domas dos parámetros:
+                1. 'self' que contiene las valores de weights y biases
+                2. 'a' un vector que contiene los valores que entran en este
+                    capa, es decir, el resultado de las capas anteriores, que 
+                    entran en este capa
+        devuelve el valor de activación, es decir, el valor obtenido después 
+        del paso en la capa
+        """
+        for b, w in zip(self.biases, self.weights): #con este for recuperamos todos las valores de w y b
             a = sigmoid(np.dot(w, a)+b)
         return a
 
