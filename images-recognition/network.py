@@ -36,7 +36,7 @@ class Network(object):
         distribution with mean 0, and variance 1.  Note that the first
         layer is assumed to be an input layer, and by convention we
         won't set any biases for those neurons, since biases are only
-        ever used in computing the outputs from later layers."""
+        ever used in computing the outputs from later layers. """
         self.num_layers = len(sizes)
         self.sizes = sizes
         self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
