@@ -147,58 +147,69 @@ class Network(object):
                        for b, nb in zip(self.biases, nabla_b)]
 
 
+    """ESte funcion permite recorrer la red """
     def backprop(self, x, y):
         """Return a tuple ``(nabla_b, nabla_w)`` representing the
         gradient for the cost function C_x.  ``nabla_b`` and
         ``nabla_w`` are layer-by-layer lists of numpy arrays, similar
         to ``self.biases`` and ``self.weights``."""
-        nabla_b = [np.zeros(b.shape) for b in self.biases]
-        nabla_w = [np.zeros(w.shape) for w in self.weights]
-        # feedforward
-        activation = x
-        activations = [x] # list to store all the activations, layer by layer
-        zs = [] # list to store all the z vectors, layer by layer
-        for b, w in zip(self.biases, self.weights):
-            z = np.dot(w, activation)+b
-            zs.append(z)
-            activation = sigmoid(z)
-            activations.append(activation)
-        # backward pass
-        delta = self.cost_derivative(activations[-1], y) * \
-            sigmoid_prime(zs[-1])
+
+
+        """inicilizacion a cero de los gradientes 'b' y 'w'"""
+        nabla_b = [np.zeros(b.shape) for b in self.biases]     
+        nabla_w = [np.zeros(w.shape) for w in self.weights] 
+        """feedforward (corremos la red para calcular y guardar en memoria las 
+        activaciones de todas las neuronas)"""
+        activation = x    # inicializacion con los valores de entrada 
+        activations = [x] # creacion de una lista para despues poder añadir 
+                          # facilamente los valores de activacion en la bucla 'for' 
+        zs = [] # creacion de una lista para almanecer los valores de 'z', es decir
+                # los valores de las entradas en cada capa
+        for b, w in zip(self.biases, self.weights): # corremos todas las valores de 'b' y 'w'
+                                                    # gracias a la funcion 'zip'
+            z = np.dot(w, activation)+b  # calcul de 'z', el vector de las entradas 
+            zs.append(z)                 # almacenamiento de 'z' en la lista 'zs'
+            activation = sigmoid(z)         # calcul del valor de activacion de cada neurona
+            activations.append(activation)  # almacenamiento de este valor en la lista 'activations'
+        """backward pass (corremos la red a partir de la salida hasta la entrada para calcular 
+        los gradientes.)"""
+
+        delta = self.cost_derivative(activations[-1], y) * sigmoid_prime(zs[-1])
         nabla_b[-1] = delta
         nabla_w[-1] = np.dot(delta, activations[-2].transpose())
-        # Note that the variable l in the loop below is used a little
-        # differently to the notation in Chapter 2 of the book.  Here,
-        # l = 1 means the last layer of neurons, l = 2 is the
-        # second-last layer, and so on.  It's a renumbering of the
-        # scheme in the book, used here to take advantage of the fact
-        # that Python can use negative indices in lists.
         for l in range(2, self.num_layers):
             z = zs[-l]
             sp = sigmoid_prime(z)
             delta = np.dot(self.weights[-l+1].transpose(), delta) * sp
             nabla_b[-l] = delta
             nabla_w[-l] = np.dot(delta, activations[-l-1].transpose())
+        """devuelve el tuple de gradientes de los biases y de los weigths"""
         return (nabla_b, nabla_w)
+    
 
+    """Esta función devuelve el número de entradas, de los datos de prueba para 
+    las cuales, la red produce el resultado correcto."""
     def evaluate(self, test_data):
-        """Return the number of test inputs for which the neural
-        network outputs the correct result. Note that the neural
-        network's output is assumed to be the index of whichever
-        neuron in the final layer has the highest activation."""
-        test_results = [(np.argmax(self.feedforward(x)), y)
-                        for (x, y) in test_data]
-        return sum(int(x == y) for (x, y) in test_results)
+        # test_results es una lista que contiene los tuples (x,y) donde 'x' es la salida 
+        # obtenida con la red, con los datos de pruebas y 'y' esta es la verdadera respuesta
+        test_results = [(np.argmax(self.feedforward(x)), y) # esta línea permite calcular la cifra 
+                                                            # que tiene la más grande probabilidad 
+                                                            # a la salida de la red, es decir, la 
+                                                            # cifra reconocida por la red
+                        for (x, y) in test_data] # este bucle 'for' cumple la línea arriba
+                                                 # por cada tuple (x, y) en los datos de prueba
+        return sum(int(x == y) for (x, y) in test_results) # Calcule el número de respuesta correcta 
 
     def cost_derivative(self, output_activations, y):
-        """Return the vector of partial derivatives \partial C_x /
-        \partial a for the output activations."""
+        """Devuelve el vector de derivadas parciales \partial C_x /
+        \partial a para las activaciones de salida."""
         return (output_activations-y)
 
 #### Miscellaneous functions
 def sigmoid(z):
-    return 1.0/(1.0+np.exp(-z)) #la funcion sigmoid
+    return 1.0/(1.0+np.exp(-z)) # funcion sigmoid, usada para calcular 
+                                # las activaciones de las neuronas
 
 def sigmoid_prime(z):
-    return sigmoid(z)*(1-sigmoid(z)) # derivada de la funcion sigmoid
+    return sigmoid(z)*(1-sigmoid(z)) # derivada de la funcion sigmoid, usada 
+                                     # para calcular los gradientes
