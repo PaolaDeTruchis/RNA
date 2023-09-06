@@ -201,6 +201,7 @@ class Network(object):
         """Devuelve el vector de derivadas parciales \partial C_x /
         \partial a para las activaciones de salida."""
         return (output_activations-y)
+    
 
 #### Miscellaneous functions
 def sigmoid(z):

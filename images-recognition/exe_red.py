@@ -16,12 +16,13 @@ net = network.Network([784, 30, 10]) # creacion de una red con tres capas
 
 # entrenamiento de la red con los "training_data" de MNIST
 # y pruebas con datos de pruebas
-net.SGD(list(training_data), 30, 10, 5.0, test_data=list(test_data))
+net.SGD(list(training_data), 30, 10, 0.5, test_data=list(test_data))
 
 
 exit()
 a=aplana(Imagen)
 resultado = net.fedforward(a)
 print (resultado)
+
 
 
