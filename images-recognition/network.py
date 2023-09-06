@@ -27,6 +27,7 @@ import numpy as np
 class Network(object):
 
 
+
     def __init__(self, sizes):
         """Esta función permite inicializar nuestra red. Como parámetros, damos 
         una lista, en la cual, cada número corresponde al número de neuronas en 
@@ -116,11 +117,11 @@ class Network(object):
                 training_data[k:k+mini_batch_size]      # datos de entrenamiento en grupos :
                 for k in range(0, n, mini_batch_size)]  # "mini_batch" con un cierto tamaño 
                                                         # elegido : "mini_batch_size"
-            for mini_batch in mini_batches:
-                self.update_mini_batch(mini_batch, eta)
-            if test_data:
-                print ("Epoch {0}: {1} / {2}".format(
-                    j, self.evaluate(test_data), n_test))
+            for mini_batch in mini_batches:            # para cada "mini_batch" actualizamos 
+                self.update_mini_batch(mini_batch, eta)# las valores de 'w' y 'b'
+            if test_data:                                   # esas línea de codigo sirve para
+                print ("Epoch {0}: {1} / {2}".format(       # generar 
+                    j, self.evaluate(test_data), n_test))   # por cada epoca
             else:
                 print ("Epoch {0} complete".format(j))
                 
