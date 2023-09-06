@@ -119,11 +119,11 @@ class Network(object):
                                                         # elegido : "mini_batch_size"
             for mini_batch in mini_batches:            # para cada "mini_batch" actualizamos 
                 self.update_mini_batch(mini_batch, eta)# las valores de 'w' y 'b'
-            if test_data:                                   # esas línea de codigo sirve para
-                print ("Epoch {0}: {1} / {2}".format(       # generar 
-                    j, self.evaluate(test_data), n_test))   # por cada epoca
-            else:
-                print ("Epoch {0} complete".format(j))
+            if test_data:                                   # esas línea de codigo sirve para generar
+                print ("Epoch {0}: {1} / {2}".format(       # el numero de buenas respuestas / el numero 
+                    j, self.evaluate(test_data), n_test))   # total de respuestas por cada epoca, si hay 
+            else:                                           # datos de preuba, de lo contrario, solo  
+                print ("Epoch {0} complete".format(j))      # muestra el número epoca actual
                 
 
     def update_mini_batch(self, mini_batch, eta):
