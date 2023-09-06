@@ -28,13 +28,11 @@ class Network(object):
 
 
     def __init__(self, sizes):
-
         """Esta función permite inicializar nuestra red. Como parámetros, damos 
         una lista, en la cual, cada número corresponde al número de neuronas en 
         la capa. Por ejemplo, size = [5, 10, 7, 3] es una red que tiene 5 neuronas 
         en su capa entrada, 3 en su capa de salida. Además, tiene 2 capas ocultadas, 
-        con 10 y 7 neuronas"""         
-
+        con 10 y 7 neuronas"""    
         self.num_layers = len(sizes) # usamos 'len' para obtener el número 
                                      # de elementos en la lista en parámetro. 
                                      # Eso corresponde al número de capas
@@ -60,15 +58,15 @@ class Network(object):
                 # cada capa, excepto la ultima, porque es la salida, entonces no 
                 # tiene weigths.
 
+
     def feedforward(self, a):
         """Esta función permite de recorrer la red capa por capa. 
         Los domas dos parámetros:
-                1. 'self' que contiene las valores de weights y biases
-                2. 'a' un vector que contiene los valores que entran en 
-                    este capa, es decir, la salida de las capas anteriores
+        1. 'self' que contiene las valores de weights y biases
+        2. 'a' un vector que contiene los valores que entran en 
+            este capa, es decir, la salida de las capas anteriores
         devuelve el valor de activación 'a', es decir, el valor obtenido 
-        después del paso en la capa
-        """
+        después del paso en la capa"""
         for b, w in zip(self.biases, self.weights): 
                 # Gracias a este bucle 'for' recorremos cada capa (con el b 
                 # en self.biaises) y cada neurona (con el w en self.weights). Por 
@@ -84,23 +82,40 @@ class Network(object):
                     #que veremos después"""
         return a
 
+
+    """Para entrenar nuestra red neuronal, utilizamos la función SGD (Stochastic 
+    Gradient Descent). Además, para que el aprendizaje sea más rápido y el SGD 
+    más estable, utilizamos un "mini-batch". Es decir, separaremos nuestros datos
+      de entrenamiento en pequeños conjuntos de datos. Esto nos permitirá actualizar 
+      nuestros sesgos y ponderaciones con más frecuencia."""
     def SGD(self, training_data, epochs, mini_batch_size, eta,
             test_data=None):
-        """Train the neural network using mini-batch stochastic
-        gradient descent.  The ``training_data`` is a list of tuples
-        ``(x, y)`` representing the training inputs and the desired
-        outputs.  The other non-optional parameters are
-        self-explanatory.  If ``test_data`` is provided then the
-        network will be evaluated against the test data after each
-        epoch, and partial progress printed out.  This is useful for
-        tracking progress, but slows things down substantially."""
-        if test_data: n_test = len(test_data)
-        n = len(training_data)
-        for j in range(epochs):
-            random.shuffle(training_data)
-            mini_batches = [
-                training_data[k:k+mini_batch_size]
-                for k in range(0, n, mini_batch_size)]
+        """training_data :    corresponde a los datos de entrenamiente Se encuentran 
+                              en forma de tupla (x,y) donde x son los datos de entrada 
+                              en la red e y la salida esperada.
+            epochs :          corresponde a cuántas veces el algoritmo de entrenamiento 
+                              recorrerá el conjunto de datos de entrenamiento completo 
+                              para entrenar la red.       
+            mini_batch_size : es el tamaño de los pequeños conjuntos de datos
+            eta :             (tasa de aprendizaje) este es el tamaño de paso utilizado 
+                              para actualizar 'w' y 'b'
+            test_data:        (datos de prueba, opcional) es un conjunto de datos que 
+                              permite evaluar el rendimiento del modelo con datos 
+                              diferentes a los utilizados para entrenar la red."""
+        if test_data: n_test = len(test_data) # si tenemos datos de prueba, 
+                                              # 'n_test' toma el tamaño de este 
+                                              # conjunto de datos
+        n = len(training_data) # n toma el valor del tamaño de los datos de entrenamiento
+        for j in range(epochs): # este bucle permite recorrer el número de epocas
+                                # entonces, todas las siguientes líneas de comando
+                                # son recorriendo para cada epoca.
+            random.shuffle(training_data) # esta línea permite mezclar los datos de 
+                                          # entrenamiento para asegurarnos que sean 
+                                          # repartidos en grupos aleatorios 
+            mini_batches = [                            # este línea permite dividir los 
+                training_data[k:k+mini_batch_size]      # datos de entrenamiento en grupos :
+                for k in range(0, n, mini_batch_size)]  # "mini_batch" con un cierto tamaño 
+                                                        # elegido : "mini_batch_size"
             for mini_batch in mini_batches:
                 self.update_mini_batch(mini_batch, eta)
             if test_data:
@@ -108,6 +123,7 @@ class Network(object):
                     j, self.evaluate(test_data), n_test))
             else:
                 print ("Epoch {0} complete".format(j))
+                
 
     def update_mini_batch(self, mini_batch, eta):
         """Update the network's weights and biases by applying
@@ -124,6 +140,7 @@ class Network(object):
                         for w, nw in zip(self.weights, nabla_w)]
         self.biases = [b-(eta/len(mini_batch))*nb
                        for b, nb in zip(self.biases, nabla_b)]
+
 
     def backprop(self, x, y):
         """Return a tuple ``(nabla_b, nabla_w)`` representing the
@@ -176,9 +193,7 @@ class Network(object):
 
 #### Miscellaneous functions
 def sigmoid(z):
-    """The sigmoid function."""
-    return 1.0/(1.0+np.exp(-z))
+    return 1.0/(1.0+np.exp(-z)) #la funcion sigmoid
 
 def sigmoid_prime(z):
-    """Derivative of the sigmoid function."""
-    return sigmoid(z)*(1-sigmoid(z))
+    return sigmoid(z)*(1-sigmoid(z)) # derivada de la funcion sigmoid
