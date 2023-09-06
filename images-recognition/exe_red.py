@@ -35,7 +35,7 @@ plt.show()            # mostra el graresult
 
 exit()
 a=aplana(Imagen)
-resultado = net.fedforward(a)
+resultado = net.fedforward(a) 
 print (resultado)
 
 
