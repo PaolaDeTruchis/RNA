@@ -147,14 +147,8 @@ class Network(object):
                        for b, nb in zip(self.biases, nabla_b)]
 
 
-    """ESte funcion permite recorrer la red """
+    """Este funcion permite recorrer la red al revés para calcular los gradientes des los biases y de los weigths"""
     def backprop(self, x, y):
-        """Return a tuple ``(nabla_b, nabla_w)`` representing the
-        gradient for the cost function C_x.  ``nabla_b`` and
-        ``nabla_w`` are layer-by-layer lists of numpy arrays, similar
-        to ``self.biases`` and ``self.weights``."""
-
-
         """inicilizacion a cero de los gradientes 'b' y 'w'"""
         nabla_b = [np.zeros(b.shape) for b in self.biases]     
         nabla_w = [np.zeros(w.shape) for w in self.weights] 
@@ -173,16 +167,19 @@ class Network(object):
             activations.append(activation)  # almacenamiento de este valor en la lista 'activations'
         """backward pass (corremos la red a partir de la salida hasta la entrada para calcular 
         los gradientes.)"""
-
+        #cacul del gradiente por la ultima capa 
         delta = self.cost_derivative(activations[-1], y) * sigmoid_prime(zs[-1])
-        nabla_b[-1] = delta
+        nabla_b[-1] = delta                                         
         nabla_w[-1] = np.dot(delta, activations[-2].transpose())
-        for l in range(2, self.num_layers):
-            z = zs[-l]
-            sp = sigmoid_prime(z)
-            delta = np.dot(self.weights[-l+1].transpose(), delta) * sp
-            nabla_b[-l] = delta
-            nabla_w[-l] = np.dot(delta, activations[-l-1].transpose())
+        #cacul del gradiente por las capas ocultadas
+        for l in range(2, self.num_layers): # este 'for' recorre las capas ocultadas al revés
+            z = zs[-l]  # recupera 'z', los valores de activacion 
+            sp = sigmoid_prime(z) # calcule 'sp' la derivada de la activacion  
+            # cálculo del nuevo gradiente 'delta' usando el gradiente de la siguiente capa multiplicado 
+            # por los pesos de la capa actual, todo multiplicado por la derivada de la función de activación.
+            delta = np.dot(self.weights[-l+1].transpose(), delta) * sp  
+            nabla_b[-l] = delta # calcul del nuevo gradiente de 'b'
+            nabla_w[-l] = np.dot(delta, activations[-l-1].transpose()) # calcul del nuevo gradiente de 'w'
         """devuelve el tuple de gradientes de los biases y de los weigths"""
         return (nabla_b, nabla_w)
     
