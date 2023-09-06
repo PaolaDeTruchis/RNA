@@ -198,9 +198,10 @@ class Network(object):
         return sum(int(x == y) for (x, y) in test_results) # Calcule el número de respuesta correcta 
 
     def cost_derivative(self, output_activations, y):
-        """Devuelve el vector de derivadas parciales \partial C_x /
+        """Devuelve el vector de derivadas parciales \partial Cd /
         \partial a para las activaciones de salida."""
-        return (output_activations-y)
+        dC = (output_activations-y)/(output_activations(1-output_activations))
+        return (dC)
 
 #### Miscellaneous functions
 def sigmoid(z):
