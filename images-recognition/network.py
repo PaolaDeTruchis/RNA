@@ -60,12 +60,12 @@ class Network(object):
 
 
     """Esta función permite de recorrer la red capa por capa. 
-        Los domas dos parámetros:
-        1. 'self' que contiene las valores de weights y biases
-        2. 'a' un vector que contiene los valores que entran en 
-            este capa, es decir, la salida de las capas anteriores
-        devuelve el valor de activación 'a', es decir, el valor obtenido 
-        después del paso en la capa"""
+    Los domas dos parámetros:
+    1. 'self' que contiene las valores de weights y biases
+    2. 'a' un vector que contiene los valores que entran en 
+        este capa, es decir, la salida de las capas anteriores
+    devuelve el valor de activación 'a', es decir, el valor obtenido 
+    después del paso en la capa"""
     def feedforward(self, a):
         for b, w in zip(self.biases, self.weights): 
                 # Gracias a este bucle 'for' recorremos cada capa (con el b 
@@ -86,8 +86,8 @@ class Network(object):
     """Para entrenar nuestra red neuronal, utilizamos la función SGD (Stochastic 
     Gradient Descent). Además, para que el aprendizaje sea más rápido y el SGD 
     más estable, utilizamos un "mini-batch". Es decir, separaremos nuestros datos
-      de entrenamiento en pequeños conjuntos de datos. Esto nos permitirá actualizar 
-      nuestros sesgos y ponderaciones con más frecuencia."""
+    de entrenamiento en pequeños conjuntos de datos. Esto nos permitirá actualizar 
+    nuestros sesgos y ponderaciones con más frecuencia."""
     def SGD(self, training_data, epochs, mini_batch_size, eta,
             test_data=None):
         """training_data :    corresponde a los datos de entrenamiente Se encuentran 
@@ -124,25 +124,26 @@ class Network(object):
             else:                                           # datos de prueba, de lo contrario, solo  
                 print ("Epoch {0} complete".format(j))      # muestra el número epoca actual
                 
-    """Este funcion : 'update_mini_batch' permite calucular los gradiantes (gracias a la funcion backprop)
-    y despues con esas valores podemos calcular las nuevas valores de weigths y biases"""
+    """Esta función: 'update_mini_batch' permite calcular los gradientes (gracias a la función backprop)
+    y después con esos valores podemos calcular las nuevas valores de weigths y biases. Las fórmulas usadas 
+    son fórmulas que hemos visto en clase"""
     def update_mini_batch(self, mini_batch, eta):
-        """Este function permite actualizar los 'w' y 'b', usando SGD y backprop"""
+        """Esta función permite actualizar los 'w' y 'b', usando SGD y backprop"""
         nabla_b = [np.zeros(b.shape) for b in self.biases]   # nabla_b es una lista de vectores que 
                                                              # contienen los gradientes de los biases 
         nabla_w = [np.zeros(w.shape) for w in self.weights]  # nabla_w es una lista de matrices que 
                                                              # contienen los gradientes de los weigths
-                                                             # para empezar llenemos ambos con zeros
+                                                             # para empezar llenemos ambos con ceros
                                                              # porque al principio no tenemos las valores   
         for x, y in mini_batch:
-            delta_nabla_b, delta_nabla_w = self.backprop(x, y) # calcule los deltas gracias a la funcion de backprop
-            """La funcion 'zip' permite asociar elementos de dos listas. Este permite calcular los gradientes de 'b'
+            delta_nabla_b, delta_nabla_w = self.backprop(x, y) # calcule los deltas gracias a la función de backprop
+            """La función 'zip' permite asociar elementos de dos listas. Este permite calcular los gradientes de 'b'
             y 'w' como lo hemos visto en clase"""
             nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
             nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)] 
         self.weights = [w-(eta/len(mini_batch))*nw                  # gracias a los gradientes de 'w' y a los weigths que ya 
-                        for w, nw in zip(self.weights, nabla_w)]    # tenemos, podemos calucular las nuevas valores de weigths
-        self.biases = [b-(eta/len(mini_batch))*nb                   # calculemos tambien el nuevo biases
+                        for w, nw in zip(self.weights, nabla_w)]    # tenemos, podemos calcular las nuevas valores de weigths
+        self.biases = [b-(eta/len(mini_batch))*nb                   # calculemos también el nuevo biases
                        for b, nb in zip(self.biases, nabla_b)]
 
 
