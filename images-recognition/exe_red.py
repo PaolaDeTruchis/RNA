@@ -1,5 +1,6 @@
 import mnist_loader
-import network
+import network 
+import matplotlib.pyplot as plt
 
 """Usamos nuestra red, para reconocer las cifras a partir de fotos. 
 Cada foto se compone de 784, por lo tanto, nuestro primero capa está 
@@ -16,7 +17,10 @@ net = network.Network([784, 30, 10]) # creacion de una red con tres capas
 
 # entrenamiento de la red con los "training_data" de MNIST
 # y pruebas con datos de pruebas
-net.SGD(list(training_data), 30, 10, 0.5, test_data=list(test_data))
+cost = net.SGD(list(training_data), 30, 10, 0.5, test_data=list(test_data))
+
+plt.plot(cost)
+
 
 
 exit()

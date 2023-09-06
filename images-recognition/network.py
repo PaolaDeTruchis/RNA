@@ -102,6 +102,7 @@ class Network(object):
             test_data:        (datos de prueba, opcional) es un conjunto de datos que 
                               permite evaluar el rendimiento del modelo con datos 
                               diferentes a los utilizados para entrenar la red."""
+        C = []
         if test_data: n_test = len(test_data) # si tenemos datos de prueba, 
                                               # 'n_test' toma el tamaño de este 
                                               # conjunto de datos
@@ -118,11 +119,16 @@ class Network(object):
                                                         # elegido : "mini_batch_size"
             for mini_batch in mini_batches:            # para cada "mini_batch" actualizamos las valores
                 self.update_mini_batch(mini_batch, eta)# de 'w' y 'b' gracias a la funciona update_mini_batch
-            if test_data:                                   # esas línea de codigo sirve para generar
-                print ("Epoch {0}: {1} / {2}".format(       # el numero de buenas respuestas / el numero 
-                    j, self.evaluate(test_data), n_test))   # total de respuestas por cada epoca, si hay 
-            else:                                           # datos de prueba, de lo contrario, solo  
-                print ("Epoch {0} complete".format(j))      # muestra el número epoca actual
+            # las líneas siguientes sirven para generar el numero de buenas respuestas / el numero total de 
+            # respuestas por cada epoca, si hay datos de prueba, de lo contrario, solo muestra el número epoca actual
+            if test_data:                                   
+                print ("Epoch {0}: {1} / {2}".format(       
+                    j, self.evaluate(test_data), n_test))    
+                C.append(self.evaluate(test_data)) # almacenar el número de respuestas correctas para cada época
+            else:                                             
+                print ("Epoch {0} complete".format(j)) 
+        return (C)     
+            
                 
     """Esta función: 'update_mini_batch' permite calcular los gradientes (gracias a la función backprop)
     y después con esos valores podemos calcular las nuevas valores de weigths y biases. Las fórmulas usadas 
