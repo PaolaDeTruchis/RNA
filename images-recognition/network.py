@@ -27,13 +27,12 @@ import numpy as np
 class Network(object):
 
 
-
-    def __init__(self, sizes):
-        """Esta función permite inicializar nuestra red. Como parámetros, damos 
-        una lista, en la cual, cada número corresponde al número de neuronas en 
-        la capa. Por ejemplo, size = [5, 10, 7, 3] es una red que tiene 5 neuronas 
-        en su capa entrada, 3 en su capa de salida. Además, tiene 2 capas ocultadas, 
-        con 10 y 7 neuronas"""    
+    """Esta función permite inicializar nuestra red. Como parámetros, damos 
+    una lista, en la cual, cada número corresponde al número de neuronas en 
+    la capa. Por ejemplo, size = [5, 10, 7, 3] es una red que tiene 5 neuronas 
+    en su capa entrada, 3 en su capa de salida. Además, tiene 2 capas ocultas, 
+    con 10 y 7 neuronas""" 
+    def __init__(self, sizes):   
         self.num_layers = len(sizes) # usamos 'len' para obtener el número 
                                      # de elementos en la lista en parámetro. 
                                      # Eso corresponde al número de capas
@@ -60,14 +59,14 @@ class Network(object):
                 # tiene weigths.
 
 
-    def feedforward(self, a):
-        """Esta función permite de recorrer la red capa por capa. 
+    """Esta función permite de recorrer la red capa por capa. 
         Los domas dos parámetros:
         1. 'self' que contiene las valores de weights y biases
         2. 'a' un vector que contiene los valores que entran en 
             este capa, es decir, la salida de las capas anteriores
         devuelve el valor de activación 'a', es decir, el valor obtenido 
         después del paso en la capa"""
+    def feedforward(self, a):
         for b, w in zip(self.biases, self.weights): 
                 # Gracias a este bucle 'for' recorremos cada capa (con el b 
                 # en self.biaises) y cada neurona (con el w en self.weights). Por 
@@ -117,29 +116,33 @@ class Network(object):
                 training_data[k:k+mini_batch_size]      # datos de entrenamiento en grupos :
                 for k in range(0, n, mini_batch_size)]  # "mini_batch" con un cierto tamaño 
                                                         # elegido : "mini_batch_size"
-            for mini_batch in mini_batches:            # para cada "mini_batch" actualizamos 
-                self.update_mini_batch(mini_batch, eta)# las valores de 'w' y 'b'
+            for mini_batch in mini_batches:            # para cada "mini_batch" actualizamos las valores
+                self.update_mini_batch(mini_batch, eta)# de 'w' y 'b' gracias a la funciona update_mini_batch
             if test_data:                                   # esas línea de codigo sirve para generar
                 print ("Epoch {0}: {1} / {2}".format(       # el numero de buenas respuestas / el numero 
                     j, self.evaluate(test_data), n_test))   # total de respuestas por cada epoca, si hay 
-            else:                                           # datos de preuba, de lo contrario, solo  
+            else:                                           # datos de prueba, de lo contrario, solo  
                 print ("Epoch {0} complete".format(j))      # muestra el número epoca actual
                 
-
+    """Este funcion : 'update_mini_batch' permite calucular los gradiantes (gracias a la funcion backprop)
+    y despues con esas valores podemos calcular las nuevas valores de weigths y biases"""
     def update_mini_batch(self, mini_batch, eta):
-        """Update the network's weights and biases by applying
-        gradient descent using backpropagation to a single mini batch.
-        The ``mini_batch`` is a list of tuples ``(x, y)``, and ``eta``
-        is the learning rate."""
-        nabla_b = [np.zeros(b.shape) for b in self.biases]
-        nabla_w = [np.zeros(w.shape) for w in self.weights]
+        """Este function permite actualizar los 'w' y 'b', usando SGD y backprop"""
+        nabla_b = [np.zeros(b.shape) for b in self.biases]   # nabla_b es una lista de vectores que 
+                                                             # contienen los gradientes de los biases 
+        nabla_w = [np.zeros(w.shape) for w in self.weights]  # nabla_w es una lista de matrices que 
+                                                             # contienen los gradientes de los weigths
+                                                             # para empezar llenemos ambos con zeros
+                                                             # porque al principio no tenemos las valores   
         for x, y in mini_batch:
-            delta_nabla_b, delta_nabla_w = self.backprop(x, y)
+            delta_nabla_b, delta_nabla_w = self.backprop(x, y) # calcule los deltas gracias a la funcion de backprop
+            """La funcion 'zip' permite asociar elementos de dos listas. Este permite calcular los gradientes de 'b'
+            y 'w' como lo hemos visto en clase"""
             nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
-            nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
-        self.weights = [w-(eta/len(mini_batch))*nw
-                        for w, nw in zip(self.weights, nabla_w)]
-        self.biases = [b-(eta/len(mini_batch))*nb
+            nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)] 
+        self.weights = [w-(eta/len(mini_batch))*nw                  # gracias a los gradientes de 'w' y a los weigths que ya 
+                        for w, nw in zip(self.weights, nabla_w)]    # tenemos, podemos calucular las nuevas valores de weigths
+        self.biases = [b-(eta/len(mini_batch))*nb                   # calculemos tambien el nuevo biases
                        for b, nb in zip(self.biases, nabla_b)]
 
 
