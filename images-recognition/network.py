@@ -200,7 +200,7 @@ class Network(object):
     def cost_derivative(self, output_activations, y):
         """Devuelve el vector de derivadas parciales \partial Cd /
         \partial a para las activaciones de salida."""
-        dC = (output_activations-y)/(output_activations(1-output_activations))
+        dC = (output_activations-y)/(output_activations*(1-output_activations))
         return (dC)
 
 #### Miscellaneous functions

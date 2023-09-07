@@ -19,7 +19,7 @@ net = network.Network([784, 30, 10]) # creacion de una red con tres capas
 
 
 # entrenamiento de la red con los "training_data" de MNIST y pruebas con datos de pruebas
-perf = net.SGD(list(training_data), 50, 10, 0.5, test_data=list(test_data)) 
+perf = net.SGD(list(training_data), 100, 10, 0.2, test_data=list(test_data)) 
 
 perf = np.array(perf) # transformación de la lista de "result" en una matriz
 
@@ -27,7 +27,7 @@ perf = 10000 - perf # permite minimizar (por convenciones)
 
 plt.plot(perf,"ob") # crea el gráfico de result 
 plt.savefig(          # guarda el gráfico  
-    os.path.abspath("C:/Users/Merci Charles/Documents/TEST/test_cost") + '/cost.png')
+    os.path.abspath("C:/Users/Merci Charles/Documents/TEST/test_cost") + '/cost_cross-entropy.png')
 plt.show()            # mostra el graresult
 
 
