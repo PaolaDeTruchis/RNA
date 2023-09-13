@@ -102,7 +102,7 @@ class Network(object):
             test_data:        (datos de prueba, opcional) es un conjunto de datos que 
                               permite evaluar el rendimiento del modelo con datos 
                               diferentes a los utilizados para entrenar la red."""
-        C = []
+        C = []      # creacion de un variable para guardar el resultado de la red en cada epoca
         if test_data: n_test = len(test_data) # si tenemos datos de prueba, 
                                               # 'n_test' toma el tamaño de este 
                                               # conjunto de datos
