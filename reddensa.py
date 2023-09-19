@@ -14,6 +14,10 @@ from sklearn.model_selection import train_test_split
 #from scipy.misc import imresize  ## deprecated
 from PIL import Image
 
+import mlflow
+
+mlflow.tensorflow.autolog()
+
 traincat = 'data/minitrain/cat/'
 traindog = 'data/minitrain/dog/'
 
@@ -33,8 +37,6 @@ ally = np.zeros(n_files)
 count = 0
 for f in cat_files:
     try:
-        #img = io.imread(f)
-        #new_img = imresize(img, (size_image, size_image, 3))
         img = Image.open(f)
         new_img = img.resize(size=(size_image, size_image))
         allX[count] = np.array(new_img)
@@ -74,9 +76,6 @@ x_test = x_test.astype('float32')
 x_train /= 255.
 x_test /= 255.
 
-#y_train = to_categorical(y, 2)
-#y_test = to_categorical(y_test, 2)
-
 y_train = y
 print(y_train)
 print(y_train.shape)
@@ -97,6 +96,6 @@ model.summary()
 
 model.compile(loss='binary_crossentropy',optimizer=RMSprop(learning_rate=0.0001),metrics=['accuracy'])
 
-history = model.fit(x_train, y_train,batch_size=100,epochs=100,verbose=1,validation_data=(x_test, y_test))
+history = model.fit(x_train, y_train,batch_size=10,epochs=10,verbose=1,validation_data=(x_test, y_test))
 score = model.evaluate(x_test, y_test, verbose=0)
 print(score)

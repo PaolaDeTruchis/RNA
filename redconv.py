@@ -3,13 +3,20 @@ from os.path import isfile,isdir, join
 import numpy
 import datetime
 
-import keras
-from keras.preprocessing.image import ImageDataGenerator
-from keras.preprocessing import image
-from keras import layers, models
-from keras.models import Sequential
-from keras.layers import Dense,Conv2D, Dropout,Activation,MaxPooling2D,Flatten
-from tensorflow.keras.optimizers import RMSprop
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense,Conv2D, Dropout,Activation,MaxPooling2D,Flatten
+from tensorflow.keras.optimizers import RMSprop, SGD
+from tensorflow.keras import regularizers
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.preprocessing import image
+
+import mlflow
+
 
 ih, iw = 150, 150 #tamano de la imagen
 input_shape = (ih, iw, 3) #forma de la imagen: alto ancho y numero de canales
@@ -21,7 +28,7 @@ test_dir = 'data/test' #directorio de prueba
 
 
 num_class = 2 #cuantas clases
-epochs = 30 #cuantas veces entrenar. En cada epoch hace una mejora en los parametros
+epochs = 10 #cuantas veces entrenar. En cada epoch hace una mejora en los parametros
 
 batch_size = 50 #batch para hacer cada entrenamiento. Lee 50 'batch_size' imagenes antes de actualizar los parametros. Las carga a memoria
 num_train = 1200 #numero de imagenes en train
@@ -76,66 +83,16 @@ model.compile(loss='binary_crossentropy',
               optimizer='rmsprop',
               metrics=['accuracy'])
 
-log_dir="logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-tbCallBack = keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1, write_graph=True, write_images=True)
-#python -m tensorboard.main --logdir=/Graph  <- Para correr Tensor board
-#tensorboard  --logdir Graph/
-print("Logs:")
-print(log_dir)
-print("__________")
 
-
-model.fit_generator(
+experiment = mlflow.get_experiment("246441047290987530")
+with mlflow.start_run() as run:
+	model.fit_generator(
                 train,
                 steps_per_epoch=epoch_steps,
                 epochs=epochs,
                 validation_data=test,
-                validation_steps=test_steps,
-                callbacks=[tbCallBack]
+                validation_steps=test_steps
                 )
 
-
-path="data/test"
-carpetas = [ f for f in listdir(path) if isdir(join(path,f))]
-import re
-
-#Ordenar Carpetas
-_nsre = re.compile('([0-9]+)')
-def nort_key(s):
-    return [int(text) if text.isdigit() else text.lower()
-            for text in re.split(_nsre, s)]
-carpetas.sort()
-
-predclass=[None] *len(carpetas)
-realclass=[None] *len(carpetas)
-for n in range(0, len(carpetas)) :
-        numeroclasses=[]
-        prediccion=[]
-        print(carpetas[n])
-        claseactual = [ f for f in listdir(join(path,carpetas[n])) if isfile(join(path,carpetas[n],f))]
-
-        for m in range(0, len(claseactual)) :
-                imagen = image.load_img(join(path,carpetas[n],claseactual[m]), target_size=(iw, ih))
-                imagen = image.img_to_array(imagen)
-                imagen /= 255
-                imagen = numpy.expand_dims(imagen, axis=0)
-                #deteccion=(model.predict_classes(imagen,verbose='0') )
-                deteccion=(model.predict(imagen) > 0.5).astype("int32")
-                prediccion.append(deteccion)
-                numeroclasses.append(n)
-        predclass[n]=prediccion
-        realclass[n]=numeroclasses
-
-
-        print(sum(predclass[n]))
-        print(sum(realclass[n]))
-
-s0=(2500-sum(predclass[0]))
-s1=(sum(predclass[1]))
-a0=(s0+s1)/float(5000)
-print(train.class_indices)
-print("Aciertos")
-
-print(a0)
 
 model.save('cvsd.h5')
