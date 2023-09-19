@@ -1,10 +1,3 @@
-from os import listdir
-from os.path import isfile,isdir, join
-import numpy
-import datetime
-
-import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
 import tensorflow as tf
 from tensorflow import keras
@@ -84,7 +77,7 @@ model.compile(loss='binary_crossentropy',
               metrics=['accuracy'])
 
 
-experiment = mlflow.get_experiment("246441047290987530")
+
 with mlflow.start_run() as run:
 	model.fit_generator(
                 train,

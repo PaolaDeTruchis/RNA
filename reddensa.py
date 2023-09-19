@@ -2,16 +2,18 @@ import os
 from glob import glob
 import numpy as np
 
-import keras
-from keras.models import Sequential
-from keras.layers import Dense, Dropout
-from tensorflow.keras.optimizers import RMSprop, Adam
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense,Conv2D, Dropout,Activation,MaxPooling2D,Flatten
+from tensorflow.keras.optimizers import RMSprop, SGD
+from tensorflow.keras import regularizers
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.preprocessing import image
+
 
 #pip install sklearn
-#pip install scikit-image
 from sklearn.model_selection import train_test_split
-#from skimage import color, io
-#from scipy.misc import imresize  ## deprecated
 from PIL import Image
 
 import mlflow
@@ -42,7 +44,6 @@ for f in cat_files:
         allX[count] = np.array(new_img)
         ally[count] = 0
         count += 1
-        print("Imagen cargada")
     except:
         print("No cargo imagen")
         #continue
