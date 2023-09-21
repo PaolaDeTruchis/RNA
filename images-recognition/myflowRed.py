@@ -45,7 +45,7 @@ y_testc = keras.utils.to_categorical(y_test, num_classes)
 
 """creation of dense sequential network"""
 model = Sequential()        
-model.add(Dense(512, activation='sigmoid', input_shape=(784,))) # creation of the input layer 
+model.add(Dense(512, activation='sigmoid', input_shape=(784,))) # creation of the middle layer
 model.add(Dense(num_classes, activation='sigmoid'))             # creation of the output layer
 
 model.summary()     # visualization of the network
