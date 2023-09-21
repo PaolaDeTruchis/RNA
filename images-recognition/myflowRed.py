@@ -33,21 +33,27 @@ x_testv = x_testv.astype('float32')
 x_trainv = x_trainv/255
 x_testv = x_testv/255
 
+num_classes=10  #number of possible output
+
+#vectorization of responses
+y_trainc = keras.utils.to_categorical(y_train, num_classes) 
+y_testc = keras.utils.to_categorical(y_test, num_classes)
+
 
 #############################   NERWORK   #############################
 
-num_classes=10
-y_trainc = keras.utils.to_categorical(y_train, num_classes)
-y_testc = keras.utils.to_categorical(y_test, num_classes)
 
-model = Sequential()
-model.add(Dense(512, activation='sigmoid', input_shape=(784,)))
-model.add(Dense(num_classes, activation='sigmoid'))
+"""creation of dense sequential network"""
+model = Sequential()        
+model.add(Dense(512, activation='sigmoid', input_shape=(784,))) # creation of the input layer 
+model.add(Dense(num_classes, activation='sigmoid'))             # creation of the output layer
 
-model.summary()
+model.summary()     # visualization of the network
+
 
 """configuration of the model"""
 model.compile(loss='categorical_crossentropy',optimizer=SGD(learning_rate=learning_rate),metrics=['accuracy'])  
+
 
 """training of the model"""
 history = model.fit(x_trainv, y_trainc,
@@ -56,6 +62,8 @@ history = model.fit(x_trainv, y_trainc,
                     verbose=1,            #show the result of each epochs
                     validation_data=(x_testv, y_testc))
 
+
+"""evaluation of the model"""
 score = model.evaluate(x_testv, y_testc, verbose=1) #evaluar la eficiencia del modelo
 print(score)
 
