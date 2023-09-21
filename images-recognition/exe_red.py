@@ -14,28 +14,29 @@ de esas capa. Aqui con la lista [784, 30, 10], hay solo una capa
 ocultada, que tiene 30 neuronas."""
 
 training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
-net = network.Network([784, 30, 10]) # creacion de una red con tres capas 
+net = network.Network([784, 512, 10]) # creacion de una red con tres capas 
                                      # previamente explicado
 
 
 # entrenamiento de la red con los "training_data" de MNIST y pruebas con datos de pruebas
-perf = net.SGD(list(training_data), 100, 10, 0.2, test_data=list(test_data)) 
+perf = net.SGD(list(training_data), 30, 10, 0.01, test_data=list(test_data)) 
 
-perf = np.array(perf) # transformación de la lista de "result" en una matriz
+perf = np.array(perf) # transformación de la lista de "perf" en una matriz
 
 perf = 10000 - perf # permite minimizar (por convenciones)
 
 plt.plot(perf,"ob") # crea el gráfico de perf 
 #plt.savefig(          # guarda el gráfico  
-#    os.path.abspath("C:/Users/Merci Charles/Documents/TEST/test_cost") + '/cost_cross-entropy.png')
-plt.show()            # mostra el graresult
+#    os.path.abspath("C:/Users/Merci Charles/Documents/TEST/test_cost") + '/cost_quadratic error.png')
+plt.show()            # mostra el gráfico
 
 
 
 
 exit()
 a=aplana(Imagen)
-resultado = net.fedforward(a) 
+resultado = net.fedforward(a)
 print (resultado)
+
 
 
