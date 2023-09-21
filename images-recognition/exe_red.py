@@ -19,7 +19,7 @@ net = network.Network([784, 30, 10]) # creacion de una red con tres capas
 
 
 # entrenamiento de la red con los "training_data" de MNIST y pruebas con datos de pruebas
-perf = net.SGD(list(training_data), 100, 10, 0.5, test_data=list(test_data)) 
+perf = net.SGD(list(training_data), 30, 10, 0.5, test_data=list(test_data)) 
 
 perf = np.array(perf) # transformación de la lista de "perf" en una matriz
 
