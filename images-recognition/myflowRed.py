@@ -44,11 +44,11 @@ y_testc = keras.utils.to_categorical(y_test, num_classes)
 
 """creation of dense sequential network"""
 model = Sequential()        
-model.add(Dense(196, activation='softsign', input_shape=(784,))) # creation of the first layer
-model.add(Dense(98, activation='softsign'))                     # creation of the second layer
-model.add(Dense(50, activation='softsign'))                      # creation of the third layer
-model.add(Dense(30, activation='softsign'))                      # creation of the fourth layer
-model.add(Dense(num_classes, activation='softsign'))             # creation of the output layer
+model.add(Dense(196, activation='softplus', input_shape=(784,))) # creation of the first layer
+model.add(Dense(98, activation='softplus'))                     # creation of the second layer
+model.add(Dense(50, activation='softplus'))                      # creation of the third layer
+model.add(Dense(30, activation='softplus'))                      # creation of the fourth layer
+model.add(Dense(num_classes, activation='softplus'))             # creation of the output layer
 
 model.summary()     # visualization of the network
 
