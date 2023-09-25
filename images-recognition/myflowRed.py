@@ -7,15 +7,14 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Activation
 from tensorflow.keras.optimizers import RMSprop, SGD
 from tensorflow.keras import regularizers
-import numpy
 
 
 ############################   SETTINGS   ############################ 
 
-learning_rate = 0.001
-epochs = 30
+learning_rate = 0.01
+epochs = 70
 batch_size = 120
-mini_batch_size = 10
+mini_batch_size = 15
 
 
 ##############################   DATA   ##############################
@@ -45,8 +44,8 @@ y_testc = keras.utils.to_categorical(y_test, num_classes)
 
 """creation of dense sequential network"""
 model = Sequential()        
-model.add(Dense(512, activation='sigmoid', input_shape=(784,))) # creation of the middle layer
-model.add(Dense(num_classes, activation='sigmoid'))             # creation of the output layer
+model.add(Dense(50, activation='sigmoid', input_shape=(784,))) # creation of the first layer
+model.add(Dense(num_classes, activation='sigmoid'))            # creation of the output layer
 
 model.summary()     # visualization of the network
 
@@ -65,7 +64,7 @@ history = model.fit(x_trainv, y_trainc,
 
 """evaluation of the model"""
 score = model.evaluate(x_testv, y_testc, verbose=1) #evaluar la eficiencia del modelo
-print(score)
+print(score) 
 
 
 
