@@ -12,9 +12,9 @@ from tensorflow.keras import regularizers
 ############################   SETTINGS   ############################ 
 
 learning_rate = 0.01
-epochs = 70
+epochs = 50
 batch_size = 120
-mini_batch_size = 15
+mini_batch_size = 10
 
 
 ##############################   DATA   ##############################
