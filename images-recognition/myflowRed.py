@@ -65,7 +65,7 @@ history = model.fit(x_trainv, y_trainc,
 
 """evaluation of the model"""
 score = model.evaluate(x_testv, y_testc, verbose=1) #evaluar la eficiencia del modelo
-print(score)
+print(score) 
 
 
 

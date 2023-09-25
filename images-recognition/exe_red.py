@@ -33,10 +33,4 @@ plt.show()            # mostra el gráfico
 
 
 
-exit()
-a=aplana(Imagen)
-resultado = net.fedforward(a)
-print (resultado)
-
-
 
