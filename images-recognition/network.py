@@ -102,10 +102,10 @@ class Network(object):
             test_data:        (datos de prueba, opcional) es un conjunto de datos que 
                               permite evaluar el rendimiento del modelo con datos 
                               diferentes a los utilizados para entrenar la red."""
-        C = []
         if test_data: n_test = len(test_data) # si tenemos datos de prueba, 
                                               # 'n_test' toma el tamaño de este 
                                               # conjunto de datos
+        C = []
         n = len(training_data) # n toma el valor del tamaño de los datos de entrenamiento
         for j in range(epochs): # este bucle permite recorrer el número de epocas
                                 # entonces, todas las siguientes líneas de comando
@@ -123,10 +123,11 @@ class Network(object):
             # respuestas por cada epoca, si hay datos de prueba, de lo contrario, solo muestra el número epoca actual
             if test_data:                                   
                 print ("Epoch {0}: {1} / {2}".format(       
-                    j, self.evaluate(test_data), n_test))    
+                    j, self.evaluate(test_data), n_test))  
                 C.append(self.evaluate(test_data)) # almacenar el número de respuestas correctas para cada época
             else:                                             
                 print ("Epoch {0} complete".format(j)) 
+            
         return (C)     
                 
     """Esta función: 'update_mini_batch' permite calcular los gradientes (gracias a la función backprop)
@@ -208,6 +209,7 @@ class Network(object):
         # derivada de la funcion de costo de Cross Entropy
         dC = (output_activations-y)/(output_activations*(1-output_activations))
         return (dC)
+
 
 #### Miscellaneous functions
 def sigmoid(z):

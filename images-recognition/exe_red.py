@@ -23,11 +23,9 @@ perf = net.SGD(list(training_data), 30, 10, 0.01, test_data=list(test_data))
 
 perf = np.array(perf) # transformación de la lista de "perf" en una matriz
 
-perf = 10000 - perf # permite minimizar (por convenciones)
-
 plt.plot(perf,"ob") # crea el gráfico de perf 
-#plt.savefig(          # guarda el gráfico  
-#    os.path.abspath("C:/Users/Merci Charles/Documents/TEST/test_cost") + '/cost_quadratic error.png')
+plt.savefig(          # guarda el gráfico  
+    os.path.abspath("C:/Users/Merci Charles/Documents/TEST/test_cost") + '/cost_quadratic error.png')
 plt.show()            # mostra el gráfico
 
 
