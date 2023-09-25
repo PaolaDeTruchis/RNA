@@ -14,7 +14,7 @@ de esas capa. Aqui con la lista [784, 30, 10], hay solo una capa
 ocultada, que tiene 30 neuronas."""
 
 training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
-net = network.Network([784, 512, 10]) # creacion de una red con tres capas 
+net = network.Network([784, 50, 10]) # creacion de una red con tres capas 
                                      # previamente explicado
 
 
