@@ -5,7 +5,7 @@ from tensorflow import keras
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Activation
-from tensorflow.keras.optimizers import RMSprop, SGD
+from tensorflow.keras.optimizers import RMSprop, SGD, Adam
 from tensorflow.keras import regularizers
 
 
@@ -54,7 +54,7 @@ model.summary()     # visualization of the network
 
 
 """configuration of the model"""
-model.compile(loss='categorical_crossentropy',optimizer=SGD(learning_rate=learning_rate),metrics=['accuracy'])  
+model.compile(loss='categorical_crossentropy',optimizer=Adam(learning_rate=learning_rate),metrics=['accuracy'])  
 
 
 """training of the model"""
