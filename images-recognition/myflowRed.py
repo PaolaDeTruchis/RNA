@@ -11,7 +11,7 @@ from tensorflow.keras import regularizers
 
 ############################   SETTINGS   ############################ 
 
-learning_rate = 0.01
+learning_rate = 0.001
 epochs = 50
 batch_size = 120
 mini_batch_size = 10
