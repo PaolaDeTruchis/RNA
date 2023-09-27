@@ -122,9 +122,9 @@ class Network(object):
             # las líneas siguientes sirven para generar el numero de buenas respuestas / el numero total de 
             # respuestas por cada epoca, si hay datos de prueba, de lo contrario, solo muestra el número epoca actual
             if test_data:                                   
-                print ("Epoch {0}: {1} / {2}".format(       
-                    j, self.evaluate(test_data), n_test))  
-                C.append(self.evaluate(test_data)) # almacenar el número de respuestas correctas para cada época
+                print ("Epoch {0}: {1}".format(       
+                    j, self.evaluate(test_data)/n_test))  
+                C.append(self.evaluate(test_data)/n_test) # almacenar el número de respuestas correctas para cada época/n_test
             else:                                             
                 print ("Epoch {0} complete".format(j)) 
             

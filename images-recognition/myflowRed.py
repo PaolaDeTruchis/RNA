@@ -12,9 +12,9 @@ from tensorflow.keras import regularizers
 ############################   SETTINGS   ############################ 
 
 learning_rate = 0.01
-epochs = 70
+epochs = 50
 batch_size = 120
-mini_batch_size = 15
+mini_batch_size = 10
 
 
 ##############################   DATA   ##############################
@@ -44,7 +44,8 @@ y_testc = keras.utils.to_categorical(y_test, num_classes)
 
 """creation of dense sequential network"""
 model = Sequential()        
-model.add(Dense(50, activation='sigmoid', input_shape=(784,))) # creation of the first layer
+model.add(Dense(98, activation='sigmoid', input_shape=(784,))) # creation of the first layer
+model.add(Dense(50, activation='sigmoid'))
 model.add(Dense(num_classes, activation='sigmoid'))            # creation of the output layer
 
 model.summary()     # visualization of the network

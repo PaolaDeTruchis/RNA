@@ -14,12 +14,12 @@ de esas capa. Aqui con la lista [784, 30, 10], hay solo una capa
 ocultada, que tiene 30 neuronas."""
 
 training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
-net = network.Network([784, 50, 10]) # creacion de una red con tres capas 
+net = network.Network([784, 98, 50, 10]) # creacion de una red con tres capas 
                                      # previamente explicado
 
 
 # entrenamiento de la red con los "training_data" de MNIST y pruebas con datos de pruebas
-perf = net.SGD(list(training_data), 30, 10, 0.01, test_data=list(test_data)) 
+perf = net.SGD(list(training_data), 50, 10, 0.01, test_data=list(test_data)) 
 
 perf = np.array(perf) # transformación de la lista de "perf" en una matriz
 
