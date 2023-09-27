@@ -5,7 +5,7 @@ from tensorflow import keras
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Activation
-from tensorflow.keras.optimizers import RMSprop, SGD, Adam
+from tensorflow.keras.optimizers import RMSprop, SGD, Adam, Adadelta
 from tensorflow.keras import regularizers
 
 
@@ -44,11 +44,11 @@ y_testc = keras.utils.to_categorical(y_test, num_classes)
 
 """creation of dense sequential network"""
 model = Sequential()        
-model.add(Dense(196, activation='softplus', input_shape=(784,))) # creation of the first layer
-model.add(Dense(98, activation='softplus'))                     # creation of the second layer
-model.add(Dense(50, activation='softplus'))                      # creation of the third layer
-model.add(Dense(30, activation='softplus'))                      # creation of the fourth layer
-model.add(Dense(num_classes, activation='softplus'))             # creation of the output layer
+model.add(Dense(196, activation='softmax', input_shape=(784,))) # creation of the first layer
+model.add(Dense(98, activation='softmax'))                      # creation of the second layer
+model.add(Dense(50, activation='softmax', input_shape=(784,))) # creation of the third layer
+model.add(Dense(30, activation='softmax'))                      # creation of the fourth layer
+model.add(Dense(num_classes, activation='softmax'))             # creation of the output layer
 
 model.summary()     # visualization of the network
 
