@@ -11,7 +11,7 @@ from tensorflow.keras import regularizers
 
 ############################   SETTINGS   ############################ 
 
-learning_rate = 0.001
+learning_rate = 0.1
 epochs = 50
 batch_size = 120
 mini_batch_size = 10
@@ -44,17 +44,17 @@ y_testc = keras.utils.to_categorical(y_test, num_classes)
 
 """creation of dense sequential network"""
 model = Sequential()        
-model.add(Dense(196, activation='softmax', input_shape=(784,))) # creation of the first layer
+model.add(Dense(196, activation='softmax', input_shape=(784,) )) # creation of the first layer
 model.add(Dense(98, activation='softmax'))                      # creation of the second layer
-model.add(Dense(50, activation='softmax', input_shape=(784,))) # creation of the third layer
-model.add(Dense(30, activation='softmax'))                      # creation of the fourth layer
-model.add(Dense(num_classes, activation='softmax'))             # creation of the output layer
+model.add(Dense(50, activation='softmax'))                      # creation of the third layer
+model.add(Dense(30, activation='softmax'))                     # creation of the fourth layer
+model.add(Dense(num_classes, activation='softmax'))          # creation of the output layer
 
 model.summary()     # visualization of the network
 
 
 """configuration of the model"""
-model.compile(loss='categorical_crossentropy',optimizer=Adam(learning_rate=learning_rate),metrics=['accuracy'])  
+model.compile(loss='categorical_crossentropy',optimizer=SGD(learning_rate=learning_rate),metrics=['accuracy'])  
 
 
 """training of the model"""
