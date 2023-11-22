@@ -31,6 +31,8 @@ model = tf.keras.Sequential([
 ])
 model.compile(optimizer='adam', loss='mean_squared_error')
 
+
+"""
 # Entrenamiento del modélo para la funcion a
 model.fit(x_train, y_train_a, epochs=100, verbose=0)
 
@@ -43,6 +45,25 @@ plt.figure(figsize=(8, 6))
 plt.scatter(x_train, y_train_a, label='Data')
 plt.plot(x_eval, y_pred_a, color='red', label='Predictions')
 plt.plot(x_eval, function_a(x_eval), color='green', linestyle='--', label='True function')
+plt.title('Approximation de la fonction a')
+plt.legend()
+plt.show()
+
+"""
+
+
+# Entrenamiento del modélo para la funcion b
+model.fit(x_train, y_train_b, epochs=100, verbose=0)
+
+# Generando datos para evaluación en el intervalo [-1, 1]
+x_eval = np.linspace(-1, 1, 1000)
+y_pred_b = model.predict(x_eval)
+
+# Trazar gráficas para la función b
+plt.figure(figsize=(8, 6))
+plt.scatter(x_train, y_train_b, label='Data')
+plt.plot(x_eval, y_pred_b, color='red', label='Predictions')
+plt.plot(x_eval, function_b(x_eval), color='green', linestyle='--', label='True function')
 plt.title('Approximation de la fonction a')
 plt.legend()
 plt.show()
