@@ -23,8 +23,10 @@ y_train_b = function_b(x_train)
 
 # Construccion del modélo con keras
 model = tf.keras.Sequential([
-    tf.keras.layers.Dense(10, activation='relu', input_shape=(1,)),
-    tf.keras.layers.Dense(10, activation='relu'),
+    tf.keras.layers.Dense(64, activation='relu', input_shape=(1,)),
+    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dense(64, activation='relu'),
     tf.keras.layers.Dense(1)
 ])
 model.compile(optimizer='adam', loss='mean_squared_error')
