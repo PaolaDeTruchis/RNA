@@ -6,3 +6,10 @@ from tensorflow.keras.optimizers import RMSprop, Adam
 
 from matplotlib import pyplot as plt
 import numpy as np
+
+
+class PolynomialLayer(Sequential):
+
+    def __init__(self,**kwargs):
+        super().__init__(**kwargs)
+        
