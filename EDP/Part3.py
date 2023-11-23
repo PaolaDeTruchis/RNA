@@ -19,3 +19,13 @@ class PolynomialLayer(Sequential):
 
     def calcular(self,x):
         return self.a0 + self.a1 * x + self.a2 * x**2 + self.a3 * x**3
+    
+
+# creacion de los datos de entrenamiento en el intervalo [-1,1]
+x_train = np.random.uniform(-1, 1, 1000)
+y_train = np.cos(2 * x_train)
+
+# Creacion del modelo con 
+model = tf.keras.Sequential([
+    PolynomialLayer()
+])
