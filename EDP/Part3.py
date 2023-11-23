@@ -17,5 +17,5 @@ class PolynomialLayer(Sequential):
         self.a2 = self.add_weight(shape=(1,), initializer='random_normal', trainable=True)
         self.a3 = self.add_weight(shape=(1,), initializer='random_normal', trainable=True)
 
-    def calcular(self):
+    def calcular(self,x):
         return self.a0 + self.a1 * x + self.a2 * x**2 + self.a3 * x**3
