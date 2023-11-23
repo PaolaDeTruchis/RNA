@@ -17,11 +17,11 @@ class PolynomialLayer(Sequential):
         self.a2 = self.add_weight(shape=(1,), initializer='random_normal', trainable=True)
         self.a3 = self.add_weight(shape=(1,), initializer='random_normal', trainable=True)
 
-    def calcular(self,x):
+    def call(self,x):
         return self.a0 + self.a1 * x + self.a2 * x**2 + self.a3 * x**3
     
 # Definicion de las funciones que tenemos que aproximar
-def function_a (x) : 
+def function (x) : 
     return np.cos(2 * x)
 
 # creacion de los datos de entrenamiento en el intervalo [-1,1]
@@ -34,7 +34,7 @@ model = tf.keras.Sequential([
 ])
 
 # compilacion del modélo
-model.compile(optimizer='adam', loss='mean_squared_error')
+model.compile(optimizer='sgd', loss='mean_squared_error')
 
 # entrenamiento del modelo con la funcion cos(2x)
 model.fit(x_train, y_train, epochs=100, verbose=0)
