@@ -46,6 +46,7 @@ plt.plot(range(1440), temperature[:1440])
 ### Analizar el siguiente código para identificar la funcionalidad de 
 ### la función : keras.utils.timeseries_dataset_form_array()
 
+""""
 int_sequence = np.arange(10) #Generamos un array de enteros del 0 al 9
 dataset = keras.utils.timeseries_dataset_from_array(
     data=int_sequence[:-3],    #secuencia para valores de x
@@ -59,14 +60,14 @@ for inputs, targets in dataset:
   print(inputs)
   print("y")
   print(targets)
-
+"""
 
 ### O bien, si queremos visualizar de forma mas ordenada
-
+"""
 for inputs, targets in dataset:
    for i in range(inputs.shape[0]):
      print([int(x) for x in inputs[i]], int(targets[i]))
-
+"""
 
 
 #########################################   TAREA   #########################################
@@ -75,7 +76,7 @@ for inputs, targets in dataset:
 ### elementos de longitud a partir de los datos de temperatura. 
 ### Aquí hay un ejemplo de una forma de lograrlo para generar un conjunto de secuencias:
 
-"""
+
 val_dataset = keras.utils.timeseries_dataset_from_array(
     data=temperature[:-delay],
     targets=temperature[delay:],
@@ -85,7 +86,7 @@ val_dataset = keras.utils.timeseries_dataset_from_array(
     batch_size=batch_size,
     start_index=num_train_samples,
     end_index=num_train_samples + num_val_samples)
-"""
+
 
 print("c'est fini")
 
