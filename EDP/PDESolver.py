@@ -52,7 +52,7 @@ class PDESolver(Sequential):
             # y_t=g.gradient(y_pred,t)
 
             # Calculo de la ecuación en derivadas parciales (PDE).
-            pde = x * y_x + y_pred - x * np.cos(x)
+            pde = x * y_x + y_pred - x * tf.cos(x)
 
             # Definicion de los valores iniciales y se calculo de la pérdida con el error cuadrático medio.
             t_init = tf.zeros(x.shape)
