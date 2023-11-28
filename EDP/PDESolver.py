@@ -34,33 +34,29 @@ class PDESolver(Sequential):
         # determine el tamaño del batch
         batch_size=100
 
-        # Generacion de datos aleatorios para 'x' y 't' dentro de ciertos rangos.
+        # Generacion de datos aleatorios para 'x' dentro de ciertos rangos.
         x = tf.random.uniform((batch_size,1), minval=0, maxval=10)
-        t = tf.random.uniform((batch_size,1), minval=0, maxval=15)
 
         # Determinacion de la pérdida y de las derivadas utilizando cintas de TensorFlow.
         with tf.GradientTape() as tape:
-            # Cálculo de las derivadas en 'x' y 't'
+            # Cálculo de las derivadas en 'x'
             with tf.GradientTape(persistent=True) as g:
                 g.watch(x)
-                g.watch(t)
 
                 with tf.GradientTape() as gg:
                     gg.watch(x)
-                    input = tf.concat((x,t),axis=1)
+                    input = tf.concat((x),axis=1)
                     y_pred = self(input, training=True)
 
                 y_x=gg.gradient(y_pred,x)
 
             y_xx=g.gradient(y_x,x)
-            y_t=g.gradient(y_pred,t)
 
             # Calculo de la ecuación en derivadas parciales (PDE).
-            pde = x * y_x + y_pred - x * tf.cos(x)
+            pde = x * y_x + y_pred - x**2 * tf.cos(x)
 
             # Definicion de los valores iniciales y se calculo de la pérdida con el error cuadrático medio.
-            t_init = tf.zeros(x.shape)
-            input_ini = tf.concat((x,t_init),axis=1)
+            input_ini = tf.concat((x),axis=1)
             y_init = self(input_ini, training=True)
             loss = self.mse(0., pde) + self.mse(tf.math.sin(x),y_init)
 
