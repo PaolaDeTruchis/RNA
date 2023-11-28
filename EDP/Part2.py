@@ -7,7 +7,6 @@ from tensorflow.keras.optimizers import RMSprop, Adam
 from matplotlib import pyplot as plt
 import numpy as np
 
-from ODEsolver import ODEsolver
 
 # Definicion de las funciones que tenemos que aproximar
 def function_a (x) : 

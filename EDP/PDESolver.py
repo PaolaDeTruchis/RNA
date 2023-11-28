@@ -56,7 +56,7 @@ class PDESolver(Sequential):
 
             # Definicion de los valores iniciales y se calculo de la pérdida con el error cuadrático medio.
             y_init = self(x, training=True)
-            loss = self.mse(0., pde) + self.mse(tf.math.sin(x),y_init)
+            loss = self.mse(0., pde) + self.mse((x/2) * tf.math.sin(x),y_init)
 
         # Compute grad
         grads = tape.gradient(loss, self.trainable_variables)
