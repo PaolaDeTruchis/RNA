@@ -17,6 +17,7 @@ class new_ODESolver(Sequential):
 
         self.add(Dense(64, activation='relu', input_shape=(1,)))
         self.add(Dense(128, activation='relu'))
+        self.add(Dense(128, activation='relu'))
         self.add(Dense(1))
 
     # La linea siguiente permite definir un metedo que sea como un attribut 
