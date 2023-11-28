@@ -18,7 +18,7 @@ class PDESolver(Sequential):
         self.loss_tracker = keras.metrics.Mean(name="loss")
         self.mse = tf.keras.losses.MeanSquaredError()
 
-        self.add(Dense(64, activation='relu', input_shape=(2,)))
+        self.add(Dense(64, activation='relu', input_shape=(1,)))
         self.add(Dense(128, activation='relu'))
         self.add(Dense(128, activation='relu'))
         self.add(Dense(1))
@@ -45,8 +45,7 @@ class PDESolver(Sequential):
 
                 with tf.GradientTape() as gg:
                     gg.watch(x)
-                    input = tf.concat((x),axis=1)
-                    y_pred = self(input, training=True)
+                    y_pred = self(x, training=True)
 
                 y_x=gg.gradient(y_pred,x)
 
@@ -56,8 +55,7 @@ class PDESolver(Sequential):
             pde = x * y_x + y_pred - x**2 * tf.cos(x)
 
             # Definicion de los valores iniciales y se calculo de la pérdida con el error cuadrático medio.
-            input_ini = tf.concat((x),axis=1)
-            y_init = self(input_ini, training=True)
+            y_init = self(x, training=True)
             loss = self.mse(0., pde) + self.mse(tf.math.sin(x),y_init)
 
         # Compute grad
