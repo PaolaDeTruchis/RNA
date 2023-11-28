@@ -18,6 +18,10 @@ class PDESolver(Sequential):
         self.loss_tracker = keras.metrics.Mean(name="loss")
         self.mse = tf.keras.losses.MeanSquaredError()
 
+        self.add(Dense(64, activation='relu', input_shape=(2,)))
+        self.add(Dense(128, activation='relu'))
+        self.add(Dense(128, activation='relu'))
+        self.add(Dense(1))
 
     # La propiedad 'metrics' devuelve la métrica de pérdida
     @property
@@ -48,8 +52,8 @@ class PDESolver(Sequential):
 
                 y_x=gg.gradient(y_pred,x)
 
-            # y_xx=g.gradient(y_x,x)
-            # y_t=g.gradient(y_pred,t)
+            y_xx=g.gradient(y_x,x)
+            y_t=g.gradient(y_pred,t)
 
             # Calculo de la ecuación en derivadas parciales (PDE).
             pde = x * y_x + y_pred - x * tf.cos(x)
