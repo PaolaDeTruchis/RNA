@@ -47,7 +47,7 @@ class ODEsolver(Sequential):
             eq = dy + 2.*x*y_pred # Ecuacion diferencial evaluada en el modelo. Queremos que sea muy pequeno
             ic = 1. # valor que queremos para la condicion inicial o el modelo en x_0
             loss = self.mse(0., eq) + self.mse(y_o,ic) # calculo de la función de pérdida
-
+ 
         # Apply grads
         grads = tape.gradient(loss, self.trainable_variables)
         self.optimizer.apply_gradients(zip(grads, self.trainable_variables))
