@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Input, Reshape
+from tensorflow.keras.layers import Dense, Dropout, Reshape
 from tensorflow.keras.optimizers import RMSprop, Adam
 
 from matplotlib import pyplot as plt
@@ -11,7 +11,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Input, Reshape
+from tensorflow.keras.layers import Dense, Dropout, Reshape
 from tensorflow.keras.optimizers import RMSprop, Adam
 
 from matplotlib import pyplot as plt
@@ -39,32 +39,30 @@ class PDESolver(Sequential):
         batch_size=100
 
         x = tf.random.uniform((batch_size,1), minval=0, maxval=10)
-        t = tf.random.uniform((batch_size,1), minval=0, maxval=15)
 
 
         with tf.GradientTape() as tape:
             #Loss value
             with tf.GradientTape(persistent=True) as g:
                 g.watch(x)
-                g.watch(t)
 
                 with tf.GradientTape() as gg:
                     gg.watch(x)
-                    input = tf.concat((x,t),axis=1)
-                    y_pred = self(input, training=True)
+                    y_pred = self(x, training=True)
 
                 y_x=gg.gradient(y_pred,x)
-                #y_boundary = gg.gradient(y_pred,x0)
+                #y_boundary = gg.gradient(y_pred,x0
             y_xx=g.gradient(y_x,x)
-            y_t=g.gradient(y_pred,t)
 
+            pde =  y_xx + y_pred
 
-            pde = y_t - 0.5*y_xx
+            x_o = tf.zeros((batch_size,1))
+            y_o = self(x_o,training=True)
+            y_x_o = y_x
+            y_init = 1
+            y_x_init = 0 
+            loss = self.mse(tf.cast(0., tf.float32), pde) + self.mse(y_o , tf.cast(y_init, tf.float32)) + self.mse(y_x_o , tf.cast(y_x_init, tf.float32))
 
-            t_init = tf.zeros(x.shape)
-            input_ini = tf.concat((x,t_init),axis=1)
-            y_init = self(input_ini, training=True)
-            loss = self.mse(0., pde) + self.mse(tf.math.sin(x),y_init)
 
         # Compute grad
         grads = tape.gradient(loss, self.trainable_variables)
