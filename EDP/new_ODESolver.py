@@ -17,7 +17,6 @@ class new_ODESolver(Sequential):
 
         self.add(Dense(64, activation='relu', input_shape=(1,)))
         self.add(Dense(128, activation='relu'))
-        self.add(Dense(128, activation='relu'))
         self.add(Dense(1))
 
     # La linea siguiente permite definir un metedo que sea como un attribut 
@@ -45,18 +44,14 @@ class new_ODESolver(Sequential):
 
             with tf.GradientTape(persistent=True) as g:
                 g.watch(x)
-
-                with tf.GradientTape() as gg:
-                    gg.watch(x)
-                    y_pred = self(x, training=True)# derivada del modelo con respecto a entradas x
-                
-                y_x=g.gradient(y_pred,x)
-           
-            y_xx = gg.gradient
+                y_pred = self(x, training=True)# derivada del modelo con respecto a entradas x
+            
+            y_x = g.gradient(y_pred,x)
             x_o = tf.zeros((batch_size,1)) # valor de x en condicion inicial x_0=0
             y_o = self(x_o,training=True) # valor del modelo en en x_0
             eq = x * y_x + y_pred - x**2 * tf.cos(x) # Ecuacion diferencial evaluada en el modelo. Queremos que sea muy pequeno
-            loss = tf.reduce_mean(tf.square(eq)) # calculo de la función de pérdida
+            ic = 0.
+            loss = self.mse(0., eq) + self.mse(y_o,ic)# calculo de la función de pérdida
  
         # Apply grads
         grads = tape.gradient(loss, self.trainable_variables)

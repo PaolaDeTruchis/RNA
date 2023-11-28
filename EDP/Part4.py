@@ -20,6 +20,7 @@ y_train1 = analytic_solu1(x_train1)
 
 solver = new_ODESolver()
 
+solver.summary()
 
 solver.compile(optimizer='adam')
 solver.fit(x_train1, y_train1, epochs=10, batch_size=100)
