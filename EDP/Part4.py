@@ -7,7 +7,7 @@ from tensorflow.keras.optimizers import RMSprop, Adam
 from matplotlib import pyplot as plt
 import numpy as np
 
-from ODEsolver import ODEsolver
+from new_ODESolver import new_ODESolver
 
 
 def analytic_solu1 (x):
@@ -18,7 +18,8 @@ x_train1 = np.sort(x_train1) # sort permite ordenanr las valores de 'x'
 y_train1 = analytic_solu1(x_train1)
 
 
-solver = ODEsolver()
+solver = new_ODESolver()
+
 
 solver.compile(optimizer='adam')
 solver.fit(x_train1, y_train1, epochs=10, batch_size=100)

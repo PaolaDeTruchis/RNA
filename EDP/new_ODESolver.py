@@ -7,13 +7,18 @@ from tensorflow.keras.optimizers import RMSprop, Adam
 from matplotlib import pyplot as plt
 import numpy as np
 
-class ODEsolver(Sequential):
+class new_ODESolver(Sequential):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         # Inicialización del seguimiento de la pérdida
         self.loss_tracker = keras.metrics.Mean(name="loss")
         # Uso del error cuadrático medio como función de pérdida
         self.mse = tf.keras.losses.MeanSquaredError()
+
+        self.add(Dense(64, activation='relu', input_shape=(1,)))
+        self.add(Dense(128, activation='relu'))
+        self.add(Dense(128, activation='relu'))
+        self.add(Dense(1))
 
     # La linea siguiente permite definir un metedo que sea como un attribut 
     @property
@@ -37,16 +42,21 @@ class ODEsolver(Sequential):
 
         # Calculo del gradiente, con el modelo, para resolver la EDO
         with tf.GradientTape() as tape:
-            with tf.GradientTape() as tape2:
-                tape2.watch(x)
-                # Predicción (del modelo) de la fucion evaluada en 'x'
-                y_pred = self(x, training=True)
-            dy = tape2.gradient(y_pred, x) # derivada del modelo con respecto a entradas x
+
+            with tf.GradientTape(persistent=True) as g:
+                g.watch(x)
+
+                with tf.GradientTape() as gg:
+                    gg.watch(x)
+                    y_pred = self(x, training=True)# derivada del modelo con respecto a entradas x
+                
+                y_x=g.gradient(y_pred,x)
+           
+            y_xx = gg.gradient
             x_o = tf.zeros((batch_size,1)) # valor de x en condicion inicial x_0=0
             y_o = self(x_o,training=True) # valor del modelo en en x_0
-            eq = dy + 2.*x*y_pred # Ecuacion diferencial evaluada en el modelo. Queremos que sea muy pequeno
-            ic = 1. # valor que queremos para la condicion inicial o el modelo en x_0
-            loss = self.mse(0., eq) + self.mse(y_o,ic) # calculo de la función de pérdida
+            eq = x * y_x + y_pred - x**2 * tf.cos(x) # Ecuacion diferencial evaluada en el modelo. Queremos que sea muy pequeno
+            loss = tf.reduce_mean(tf.square(eq)) # calculo de la función de pérdida
  
         # Apply grads
         grads = tape.gradient(loss, self.trainable_variables)
