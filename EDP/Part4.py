@@ -18,11 +18,10 @@ x_train1 = np.random.uniform(-20, 20, 10000)  # las valores aleatorias deben est
 x_train1 = np.sort(x_train1) # sort permite ordenanr las valores de 'x'
 y_train1 = analytic_solu1(x_train1)
 
-x_train1 = np.reshape(x_train1, (-1, 1, 1))
-y_train1 = np.reshape(y_train1, (-1, 1, 1))
 
 solver = PDESolver()
 
+solver.build(input_shape=(None, 1))
 solver.summary()
 
 optimizer = Adam(learning_rate = 0.0001)
@@ -31,7 +30,7 @@ solver.fit(x_train1, y_train1, epochs=10, batch_size=100)
 
 
 # Generando datos para evaluación en el intervalo [-1, 1]
-x_eval = np.linspace(-10, 10, 1000)
+x_eval = np.linspace(-5, 5, 1000)
 y_pred1 = solver.predict(x_eval)
 
 # Trazar gráficas para la función b

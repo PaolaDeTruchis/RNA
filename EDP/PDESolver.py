@@ -3,6 +3,7 @@ from tensorflow import keras
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Reshape, LSTM
 from tensorflow.keras.optimizers import RMSprop, Adam
+from tensorflow.keras import regularizers
 
 from matplotlib import pyplot as plt
 import numpy as np
@@ -16,10 +17,10 @@ class PDESolver(Sequential):
         super().__init__(**kwargs)
         self.loss_tracker = keras.metrics.Mean(name="loss")
         self.mse = tf.keras.losses.MeanSquaredError()
-        self.add(LSTM(64, return_sequences=True, input_shape=(1, 1)))
-        self.add(Dense(356, activation='relu'))     
+        self.add(Dense(712, activation='relu', kernel_regularizer=regularizers.l2(0.01))) 
+        self.add(Dense(356, activation='relu', kernel_regularizer=regularizers.l2(0.01))) 
         self.add(Dropout(0.2))  # Añadi un layer  Dropout
-        self.add(Dense(128, activation='relu'))
+        self.add(Dense(128, activation='relu',kernel_regularizer=regularizers.l2(0.01)))
         self.add(Dense(1))
 
     @property
