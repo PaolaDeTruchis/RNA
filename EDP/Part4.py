@@ -18,14 +18,16 @@ x_train1 = np.random.uniform(-20, 20, 10000)  # las valores aleatorias deben est
 x_train1 = np.sort(x_train1) # sort permite ordenanr las valores de 'x'
 y_train1 = analytic_solu1(x_train1)
 
+x_train1 = np.reshape(x_train1, (-1, 1, 1))
+y_train1 = np.reshape(y_train1, (-1, 1, 1))
 
 solver = PDESolver()
 
 solver.summary()
 
-optimizer = Adam(learning_rate = 0.001)
+optimizer = Adam(learning_rate = 0.0001)
 solver.compile(optimizer=optimizer, loss='mse', metrics=['accuracy'])
-solver.fit(x_train1, y_train1, epochs=30, batch_size=100)
+solver.fit(x_train1, y_train1, epochs=10, batch_size=100)
 
 
 # Generando datos para evaluación en el intervalo [-1, 1]

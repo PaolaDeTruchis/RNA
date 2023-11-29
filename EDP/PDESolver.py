@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Reshape
+from tensorflow.keras.layers import Dense, Dropout, Reshape, LSTM
 from tensorflow.keras.optimizers import RMSprop, Adam
 
 from matplotlib import pyplot as plt
@@ -16,9 +16,9 @@ class PDESolver(Sequential):
         super().__init__(**kwargs)
         self.loss_tracker = keras.metrics.Mean(name="loss")
         self.mse = tf.keras.losses.MeanSquaredError()
-        self.add(Dense(64, activation='relu', input_shape=(1,)))
+        self.add(LSTM(64, return_sequences=True, input_shape=(1, 1)))
         self.add(Dense(356, activation='relu'))     
-        self.add(Dropout(0.2))  # Añadi un layer Dropout
+        self.add(Dropout(0.2))  # Añadi un layer  Dropout
         self.add(Dense(128, activation='relu'))
         self.add(Dense(1))
 
@@ -30,7 +30,7 @@ class PDESolver(Sequential):
         #batch_size=tf.shape(data)[0]
         batch_size=100
 
-        x = tf.random.uniform((10,1), minval=0, maxval=10)
+        x = tf.random.uniform((batch_size, 1), minval=0, maxval=10)
 
 
         with tf.GradientTape() as tape:
