@@ -45,12 +45,8 @@ class PDESolver(Sequential):
 
             pde =  y_xx + y_pred
 
-            x_o = tf.zeros((batch_size,1))
-            y_o = self(x_o,training=True)
-            y_x_o = y_x
-            y_init = 1
-            y_x_init = -0.5
-            loss = self.mse(tf.cast(0., tf.float32), pde) + self.mse(y_o , tf.cast(y_init, tf.float32)) + self.mse(y_x_o , tf.cast(y_x_init, tf.float32))
+            y_init = self(x, training=True)
+            loss = self.mse(0., pde) + self.mse(tf.math.sin(x),y_init)
 
 
         # Compute grad

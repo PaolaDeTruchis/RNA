@@ -30,9 +30,9 @@ solver.add(Dense(1))
 solver.build(input_shape=(None, 1))
 solver.summary()
 
-optimizer = Adam(learning_rate = 0.0001)
+optimizer = Adam(learning_rate = 0.001)
 solver.compile(optimizer=optimizer, loss='mse', metrics=['accuracy'])
-solver.fit(x_train1, epochs=100, batch_size=100)
+solver.fit(x_train1, epochs=200, batch_size=100)
 
 
 # Generando datos para evaluación en el intervalo [-1, 1]
