@@ -15,10 +15,6 @@ class new_ODESolver(Sequential):
         # Uso del error cuadrático medio como función de pérdida
         self.mse = tf.keras.losses.MeanSquaredError()
 
-        self.add(Dense(64, activation='relu', input_shape=(1,)))
-        self.add(Dense(128, activation='relu'))
-        self.add(Dense(1))
-
     # La linea siguiente permite definir un metedo que sea como un attribut 
     @property
     # Este metodo permite enviar una lista que contiene las 'metrics' de self.loss_tracker
@@ -41,15 +37,15 @@ class new_ODESolver(Sequential):
 
         # Calculo del gradiente, con el modelo, para resolver la EDO
         with tf.GradientTape() as tape:
+            with tf.GradientTape() as tape2:
+                tape2.watch(x)
+                # Predicción (del modelo) de la fucion evaluada en 'x'
+                y_pred = self(x, training=True)
 
-            with tf.GradientTape(persistent=True) as g:
-                g.watch(x)
-                y_pred = self(x, training=True)# derivada del modelo con respecto a entradas x
-            
-            y_x = g.gradient(y_pred,x)
+            dy = tape2.gradient(y_pred, x) # derivada del modelo con respecto a entradas x
             x_o = tf.zeros((batch_size,1)) # valor de x en condicion inicial x_0=0
             y_o = self(x_o,training=True) # valor del modelo en en x_0
-            eq = x * y_x + y_pred - x**2 * tf.cos(x) # Ecuacion diferencial evaluada en el modelo. Queremos que sea muy pequeno
+            eq = x * dy + y_pred - x**2 * tf.cos(x) # Ecuacion diferencial evaluada en el modelo. Queremos que sea muy pequeno
             ic = 0.
             loss = self.mse(0., eq) + self.mse(y_o,ic)# calculo de la función de pérdida
  
