@@ -15,16 +15,16 @@ from PDESolver import PDESolver
 def analytic_solu1 (x):
     return np.cos(x) - 0.5*np.sin(x)
 
-x_train1 = np.random.uniform(-20, 20, 1000)  # las valores aleatorias deben estar en el intervalo [-5, 5]
+x_train1 = np.random.uniform(-20, 20, 1000)  
 x_train1 = np.sort(x_train1) # sort permite ordenanr las valores de 'x'
 
 
 solver = PDESolver()
-solver.add(Dense(712, activation='relu', kernel_regularizer=regularizers.l2(0.01))) 
+solver.add(Dense(712, activation='tanh', kernel_regularizer=regularizers.l2(0.01))) 
 solver.add(Dropout(0.2))
-solver.add(Dense(356, activation='relu', kernel_regularizer=regularizers.l2(0.01))) 
+solver.add(Dense(356, activation='tanh', kernel_regularizer=regularizers.l2(0.01))) 
 solver.add(Dropout(0.2))  # Añadi un layer  Dropout
-solver.add(Dense(128, activation='relu',kernel_regularizer=regularizers.l2(0.01)))
+solver.add(Dense(128, activation='tanh',kernel_regularizer=regularizers.l2(0.01)))
 solver.add(Dense(1))
 
 solver.build(input_shape=(None, 1))
