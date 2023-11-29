@@ -23,7 +23,8 @@ solver = PDESolver()
 
 solver.summary()
 
-solver.compile(optimizer='RMSProp')
+optimizer = Adam(learning_rate = 0.001)
+solver.compile(optimizer=optimizer, loss='mse', metrics=['accuracy'])
 solver.fit(x_train1, y_train1, epochs=30, batch_size=100)
 
 
