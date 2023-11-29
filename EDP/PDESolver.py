@@ -16,9 +16,9 @@ class PDESolver(Sequential):
         super().__init__(**kwargs)
         self.loss_tracker = keras.metrics.Mean(name="loss")
         self.mse = tf.keras.losses.MeanSquaredError()
-        self.add(Dense(64, activation='sigmoid', input_shape=(1,)))
-        self.add(Dense(356, activation='sigmoid'))     
-        self.add(Dense(128, activation='sigmoid'))
+        self.add(Dense(64, activation='relu', input_shape=(1,)))
+        self.add(Dense(356, activation='relu'))     
+        self.add(Dense(128, activation='relu'))
         self.add(Dense(1))
 
     @property

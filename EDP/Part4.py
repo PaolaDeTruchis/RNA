@@ -14,7 +14,7 @@ from PDESolver import PDESolver
 def analytic_solu1 (x):
     return np.cos(x) - 0.5*np.sin(x)
 
-x_train1 = np.random.uniform(-10, 10, 10000)  # las valores aleatorias deben estar en el intervalo [-5, 5]
+x_train1 = np.random.uniform(-20, 20, 10000)  # las valores aleatorias deben estar en el intervalo [-5, 5]
 x_train1 = np.sort(x_train1) # sort permite ordenanr las valores de 'x'
 y_train1 = analytic_solu1(x_train1)
 
@@ -23,7 +23,7 @@ solver = PDESolver()
 
 solver.summary()
 
-solver.compile(optimizer='adam')
+solver.compile(optimizer='RMSProp')
 solver.fit(x_train1, y_train1, epochs=30, batch_size=100)
 
 
