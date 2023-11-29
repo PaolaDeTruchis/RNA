@@ -17,11 +17,7 @@ class PDESolver(Sequential):
         super().__init__(**kwargs)
         self.loss_tracker = keras.metrics.Mean(name="loss")
         self.mse = tf.keras.losses.MeanSquaredError()
-        self.add(Dense(712, activation='relu', kernel_regularizer=regularizers.l2(0.01))) 
-        self.add(Dense(356, activation='relu', kernel_regularizer=regularizers.l2(0.01))) 
-        self.add(Dropout(0.2))  # Añadi un layer  Dropout
-        self.add(Dense(128, activation='relu',kernel_regularizer=regularizers.l2(0.01)))
-        self.add(Dense(1))
+        
 
     @property
     def metrics(self):
