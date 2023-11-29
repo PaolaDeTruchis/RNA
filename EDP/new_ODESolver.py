@@ -15,9 +15,10 @@ class new_ODESolver(Sequential):
         # Uso del error cuadrático medio como función de pérdida
         self.mse = tf.keras.losses.MeanSquaredError()
 
-        self.add(Dense(64, activation='relu', input_shape=(1,)))
-        self.add(Dense(128, activation='relu'))
-        self.add(Dense(128, activation='relu'))
+        self.add(Dense(64, activation='tanh', input_shape=(1,)))
+        self.add(Dense(356, activation='tanh'))
+        self.add(Dense(128, activation='tanh'))        
+        self.add(Dense(128, activation='tanh'))
         self.add(Dense(1))
 
     # La linea siguiente permite definir un metedo que sea como un attribut 

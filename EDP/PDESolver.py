@@ -8,16 +8,6 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Reshape
-from tensorflow.keras.optimizers import RMSprop, Adam
-
-from matplotlib import pyplot as plt
-import numpy as np
-
-
 # La clase PDESolver hereda de Sequential.
 # Esta clase se utiliza para resolver ecuaciones en derivadas parciales.
 
@@ -26,8 +16,9 @@ class PDESolver(Sequential):
         super().__init__(**kwargs)
         self.loss_tracker = keras.metrics.Mean(name="loss")
         self.mse = tf.keras.losses.MeanSquaredError()
-        self.add(Dense(64, activation='relu', input_shape=(1,)))
-        self.add(Dense(128, activation='relu'))
+        self.add(Dense(64, activation='sigmoid', input_shape=(1,)))
+        self.add(Dense(356, activation='sigmoid'))     
+        self.add(Dense(128, activation='sigmoid'))
         self.add(Dense(1))
 
     @property
@@ -38,7 +29,7 @@ class PDESolver(Sequential):
         #batch_size=tf.shape(data)[0]
         batch_size=100
 
-        x = tf.random.uniform((batch_size,1), minval=0, maxval=10)
+        x = tf.random.uniform((10,1), minval=0, maxval=10)
 
 
         with tf.GradientTape() as tape:
@@ -60,7 +51,7 @@ class PDESolver(Sequential):
             y_o = self(x_o,training=True)
             y_x_o = y_x
             y_init = 1
-            y_x_init = 0 
+            y_x_init = -0.5
             loss = self.mse(tf.cast(0., tf.float32), pde) + self.mse(y_o , tf.cast(y_init, tf.float32)) + self.mse(y_x_o , tf.cast(y_x_init, tf.float32))
 
 
