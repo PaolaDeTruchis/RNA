@@ -18,6 +18,7 @@ class PDESolver(Sequential):
         self.mse = tf.keras.losses.MeanSquaredError()
         self.add(Dense(64, activation='relu', input_shape=(1,)))
         self.add(Dense(356, activation='relu'))     
+        self.add(Dropout(0.2))  # Añadi un layer Dropout
         self.add(Dense(128, activation='relu'))
         self.add(Dense(1))
 
