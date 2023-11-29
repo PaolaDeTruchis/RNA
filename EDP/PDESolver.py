@@ -46,7 +46,7 @@ class PDESolver(Sequential):
             pde =  y_xx + y_pred
 
             y_init = self(x, training=True)
-            loss = self.mse(0., pde) + self.mse(tf.math.sin(x),y_init)
+            loss = self.mse(0., pde) + self.mse(tf.math.cos(x),y_init)
 
 
         # Compute grad
