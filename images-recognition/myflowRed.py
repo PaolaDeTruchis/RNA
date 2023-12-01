@@ -53,7 +53,7 @@ model.add(Dense(196, activation='softplus', input_shape=(784,), kernel_regulariz
 model.add(Dense(98, activation='softplus', kernel_regularizer=regularizers.L1(0.01)))
 model.add(Dense(50, activation='softplus', kernel_regularizer=regularizers.L1(0.01)))
 model.add(Dense(30, activation='softplus', kernel_regularizer=regularizers.L1(0.01)))
-model.add(Dense(num_classes, activation='softplus', kernel_regularizer=regularizers.L1(0.01)))
+model.add(Dense(num_classes, activation='softmax', kernel_regularizer=regularizers.L1(0.01)))
 
 
 """Visualisation of the model"""
@@ -82,16 +82,28 @@ best_model.save_weights("best_model_weights.h5")
 
 """creation of the new model"""
 new_model = Sequential()        
-model.add(Dense(196, activation='softplus', input_shape=(784,), kernel_regularizer=regularizers.L1(0.01)))
-model.add(Dense(98, activation='softplus', kernel_regularizer=regularizers.L2(0.01)))
-model.add(Dense(50, activation='softplus', kernel_regularizer=regularizers.L1L2(0.01,0.01)))
-model.add(Dropout(0.03))
-model.add(Dropout(0.03))
-model.add(Dense(num_classes, activation='softplus', kernel_regularizer=regularizers.L1L2(0.01,0.01)))
+new_model.add(Dense(196, activation='softplus', input_shape=(784,), kernel_regularizer=regularizers.L1(0.01)))
+new_model.add(Dense(98, activation='softplus', kernel_regularizer=regularizers.L2(0.01)))
+new_model.add(Dense(50, activation='softplus', kernel_regularizer=regularizers.L1L2(0.01,0.01)))
+new_model.add(Dropout(0.3))
+new_model.add(Dropout(0.3))
+new_model.add(Dense(num_classes, activation='softmax', kernel_regularizer=regularizers.L1L2(0.01,0.01)))
+
+
+"""training of the model, until it overadjust"""
+history = new_model.fit(x_trainv, y_trainc,
+                    batch_size=mini_batch_size,
+                    epochs=epochs,
+                    verbose=1,            #show the result of each epochs
+                    validation_data=(x_testv, y_testc))
+
+
+"""saving the weights in the new model"""
+new_model.load_weights("best_model_weights.h5")
 
 
 """evaluation of the bestmodel"""
-score = best_model.evaluate(x_testv, y_testc, verbose=1) #evaluar la eficiencia del modelo
+score = new_model.evaluate(x_testv, y_testc, verbose=1) #evaluar la eficiencia del modelo
 print(score) 
 
 
