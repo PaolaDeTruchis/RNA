@@ -7,6 +7,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Input
 from tensorflow.keras.optimizers import RMSprop, SGD, Adam, Adadelta
 from tensorflow.keras import regularizers
+from tensorflow.keras.callbacks import EarlyStopping
 
 
 ############################   SETTINGS   ############################ 
@@ -51,24 +52,36 @@ model.add(Dense(50, activation='softmax', kernel_regularizer=regularizers.L1(0.0
 model.add(Dense(30, activation='softmax', kernel_regularizer=regularizers.L1(0.01)))
 model.add(Dense(num_classes, activation='softmax', kernel_regularizer=regularizers.L1(0.01)))
 
+"""Creacion of the callback EarlyStopping"""
+early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
 
+"""Visualisation of the model"""
 model.summary()     # visualization of the network
 
 
 """configuration of the model"""
-model.compile(loss='categorical_crossentropy',optimizer=RMSprop(learning_rate=learning_rate),metrics=['accuracy'])  
+model.compile(loss='categorical_crossentropy',optimizer=Adam(learning_rate=learning_rate),metrics=['accuracy'])  
 
 
-"""training of the model"""
+"""training of the model, until it overadjust"""
 history = model.fit(x_trainv, y_trainc,
                     batch_size=mini_batch_size,
                     epochs=epochs,
                     verbose=1,            #show the result of each epochs
-                    validation_data=(x_testv, y_testc))
+                    validation_data=(x_testv, y_testc),
+                    callbacks=[early_stopping])
+
+"""conservation of the model not over adjusted"""
+bestmodel = model 
+
+"""conservation of the weights"""
+bestmodel.save_weights("best_model_weights.h5")
 
 
-"""evaluation of the model"""
-score = model.evaluate(x_testv, y_testc, verbose=1) #evaluar la eficiencia del modelo
+
+
+"""evaluation of the bestmodel"""
+score = bestmodel.evaluate(x_testv, y_testc, verbose=1) #evaluar la eficiencia del modelo
 print(score) 
 
 
