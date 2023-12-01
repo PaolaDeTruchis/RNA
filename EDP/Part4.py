@@ -15,7 +15,7 @@ from PDESolver import PDESolver
 def analytic_solu1 (x):
     return np.cos(x) - 0.5*np.sin(x)
 
-x_train1 = np.random.uniform(-20, 20, 1000)  
+x_train1 = np.random.uniform(0, 10, 1000)  
 x_train1 = np.sort(x_train1) # sort permite ordenanr las valores de 'x'
 
 
@@ -36,7 +36,7 @@ solver.fit(x_train1, epochs=200, batch_size=100)
 
 
 # Generando datos para evaluación en el intervalo [-1, 1]
-x_eval = np.linspace(-5, 5, 1000)
+x_eval = np.linspace(0, 10, 1000)
 y_pred = solver.predict(x_eval)
 
 # Trazar gráficas para la función b
