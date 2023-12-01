@@ -87,6 +87,13 @@ new_model.add(Dropout(0.3))
 new_model.add(Dense(num_classes, activation='softmax', kernel_regularizer=regularizers.L1L2(0.01,0.01)))
 
 
+"""Visualisation of the model"""
+new_model.summary()     # visualization of the network
+
+
+"""configuration of the model"""
+new_model.compile(loss='categorical_crossentropy',optimizer=Adam(learning_rate=learning_rate),metrics=['accuracy'])  
+
 """training of the model, until it overadjust"""
 history = new_model.fit(x_trainv, y_trainc,
                     batch_size=mini_batch_size,
