@@ -43,17 +43,18 @@ y_testc = keras.utils.to_categorical(y_test, num_classes)
 
 #############################   NERWORK   #############################
 
+"""Creacion of the callback EarlyStopping"""
+early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
+
 
 """creation of dense sequential network"""
 model = Sequential()        
-model.add(Dense(196, activation='softmax', input_shape=(784,), kernel_regularizer=regularizers.L1(0.01)))
-model.add(Dense(98, activation='softmax', kernel_regularizer=regularizers.L1(0.01)))
-model.add(Dense(50, activation='softmax', kernel_regularizer=regularizers.L1(0.01)))
-model.add(Dense(30, activation='softmax', kernel_regularizer=regularizers.L1(0.01)))
-model.add(Dense(num_classes, activation='softmax', kernel_regularizer=regularizers.L1(0.01)))
+model.add(Dense(196, activation='softplus', input_shape=(784,), kernel_regularizer=regularizers.L1(0.01)))
+model.add(Dense(98, activation='softplus', kernel_regularizer=regularizers.L1(0.01)))
+model.add(Dense(50, activation='softplus', kernel_regularizer=regularizers.L1(0.01)))
+model.add(Dense(30, activation='softplus', kernel_regularizer=regularizers.L1(0.01)))
+model.add(Dense(num_classes, activation='softplus', kernel_regularizer=regularizers.L1(0.01)))
 
-"""Creacion of the callback EarlyStopping"""
-early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
 
 """Visualisation of the model"""
 model.summary()     # visualization of the network
@@ -72,16 +73,25 @@ history = model.fit(x_trainv, y_trainc,
                     callbacks=[early_stopping])
 
 """conservation of the model not over adjusted"""
-bestmodel = model 
+best_model = model 
+
 
 """conservation of the weights"""
-bestmodel.save_weights("best_model_weights.h5")
+best_model.save_weights("best_model_weights.h5")
 
 
+"""creation of the new model"""
+new_model = Sequential()        
+model.add(Dense(196, activation='softplus', input_shape=(784,), kernel_regularizer=regularizers.L1(0.01)))
+model.add(Dense(98, activation='softplus', kernel_regularizer=regularizers.L2(0.01)))
+model.add(Dense(50, activation='softplus', kernel_regularizer=regularizers.L1L2(0.01,0.01)))
+model.add(Dropout(0.03))
+model.add(Dropout(0.03))
+model.add(Dense(num_classes, activation='softplus', kernel_regularizer=regularizers.L1L2(0.01,0.01)))
 
 
 """evaluation of the bestmodel"""
-score = bestmodel.evaluate(x_testv, y_testc, verbose=1) #evaluar la eficiencia del modelo
+score = best_model.evaluate(x_testv, y_testc, verbose=1) #evaluar la eficiencia del modelo
 print(score) 
 
 
