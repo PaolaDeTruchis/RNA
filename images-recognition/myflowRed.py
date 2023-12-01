@@ -72,12 +72,9 @@ history = model.fit(x_trainv, y_trainc,
                     validation_data=(x_testv, y_testc),
                     callbacks=[early_stopping])
 
-"""conservation of the model not over adjusted"""
-best_model = model 
-
 
 """conservation of the weights"""
-best_model.save_weights("best_model_weights.h5")
+model.save_weights("model_weights.h5")
 
 
 """creation of the new model"""
@@ -99,7 +96,7 @@ history = new_model.fit(x_trainv, y_trainc,
 
 
 """saving the weights in the new model"""
-new_model.load_weights("best_model_weights.h5")
+new_model.load_weights("model_weights.h5")
 
 
 """evaluation of the bestmodel"""
