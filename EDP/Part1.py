@@ -26,4 +26,16 @@ class ConvertToGrayscale(tf.keras.layers.Layer):
 train_images = train_images / 255.0   # Asi todos los valores son entre 0 y 1
 
 
+# Ahora creo y entreno el modelo
+model = keras.Sequential([ConvertToGrayscale(input_shape=(28, 28))])
+
+model.summary()
+model.compile(optimizer='adam')
+model.fit(train_images, epochs=10, batch_size=100)
+
+
+
+
+
+
 
