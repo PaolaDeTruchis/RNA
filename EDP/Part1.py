@@ -10,6 +10,8 @@ class ConvertToGrayscale(keras.layers.Layer):
     def call(self, inputs):
         # Convertir la imagen a escala de grises
         grayscale = tf.image.rgb_to_grayscale(inputs)
+        # Añado una dimension que coresponde al canal de color
+        grayscale = tf.expand_dims(grayscale, axis=-1) 
         return grayscale
     
 ################# Ejemplo coon la base de datos MINST ######################## 
@@ -34,19 +36,13 @@ train_images = train_images.reshape(train_images.shape[0],train_images.shape[1],
 print(train_images.shape)
 
 
-# Creacion de un layer
-convert_to_grayscale = ConvertToGrayscale()
-
 # Ahora creo y entreno el modelo
-model = Sequential([convert_to_grayscale])
-
+model = Sequential()
+model.add(ConvertToGrayscale())
+# Construction del modelo
+model.build(input_shape=(None, 28, 28, 1))
 model.summary()
 model.compile(optimizer='adam')
-model.fit(train_images, epochs=10, batch_size=100)
-
-
-
-
-
+model.fit(train_images,train_labels, epochs=10, batch_size=100)
 
 
