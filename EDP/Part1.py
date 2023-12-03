@@ -25,14 +25,24 @@ class ConvertToGrayscale(tf.keras.layers.Layer):
 
 train_images = train_images / 255.0   # Asi todos los valores son entre 0 y 1
 
+# Tengo que cambiar la forma de los datos de entrenamiento.
+# Primero me voy a visualizar el tamaño actual de esos datos :
+print(train_images.shape) # la salida es : (60000, 28, 28)
+# eso significa que tenemos 60000 imagenes de 28 por 28 pixeles
 
+# Entonces tenemos que añadir un numero que especifica que el canal de color 
+# en este ejemlo es 1 porque son nuancias de grises.
+train_images = train_images.reshape(train_images.shape[0],train_images.shape[1],train_images.shape[2], 1)
+print(train_images.shape)
+
+"""
 # Ahora creo y entreno el modelo
 model = keras.Sequential([ConvertToGrayscale(input_shape=(28, 28))])
 
 model.summary()
 model.compile(optimizer='adam')
 model.fit(train_images, epochs=10, batch_size=100)
-
+"""
 
 
 
