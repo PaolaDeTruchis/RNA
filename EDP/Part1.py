@@ -1,11 +1,9 @@
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout,Activation
-from tensorflow.keras.optimizers import RMSprop, Adam
 
 
-class ConvertToGrayscale(tf.keras.layers.Layer):
+class ConvertToGrayscale(keras.layers.Layer):
     def __init__(self):
         super(ConvertToGrayscale, self).__init__()
 
@@ -14,7 +12,7 @@ class ConvertToGrayscale(tf.keras.layers.Layer):
         grayscale = tf.image.rgb_to_grayscale(inputs)
         return grayscale
     
-# Ejemplo coon la base de datos MINST 
+################# Ejemplo coon la base de datos MINST ######################## 
 
 # Primero tenemos que cargar los dotas MINST
 (train_images, train_labels), _ = tf.keras.datasets.mnist.load_data()
@@ -35,14 +33,17 @@ print(train_images.shape) # la salida es : (60000, 28, 28)
 train_images = train_images.reshape(train_images.shape[0],train_images.shape[1],train_images.shape[2], 1)
 print(train_images.shape)
 
-"""
+
+# Creacion de un layer
+convert_to_grayscale = ConvertToGrayscale()
+
 # Ahora creo y entreno el modelo
-model = keras.Sequential([ConvertToGrayscale(input_shape=(28, 28))])
+model = Sequential([convert_to_grayscale])
 
 model.summary()
 model.compile(optimizer='adam')
 model.fit(train_images, epochs=10, batch_size=100)
-"""
+
 
 
 
