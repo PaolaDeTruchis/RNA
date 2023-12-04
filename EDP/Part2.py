@@ -31,6 +31,8 @@ model = tf.keras.Sequential([
 model.compile(optimizer='adam', loss='mean_squared_error')
 
 
+# Para obtener el grafico de la funcion a, solo tienes que descommentar la parte siguiente
+# y executar el condigo entero.
 """
 # Entrenamiento del modélo para la funcion a
 model.fit(x_train, y_train_a, epochs=100, verbose=0)
@@ -51,6 +53,9 @@ plt.show()
 """
 
 
+# Para obtener el grafico de la funcion b, solo tienes que descommentar la parte siguiente
+# y executar el condigo entero.
+"""
 # Entrenamiento del modélo para la funcion b
 model.fit(x_train, y_train_b, epochs=100, verbose=0)
 
@@ -66,6 +71,6 @@ plt.plot(x_eval, function_b(x_eval), color='green', linestyle='--', label='True 
 plt.title('Approximation de la fonction a')
 plt.legend()
 plt.show()
-
+"""
 
 

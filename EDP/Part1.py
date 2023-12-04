@@ -11,7 +11,7 @@ class ConvertToGrayscale(keras.layers.Layer):
         # Convertir la imagen a escala de grises
         grayscale = tf.image.rgb_to_grayscale(inputs)
         # Añado una dimension que coresponde al canal de color
-        grayscale = tf.expand_dims(grayscale, axis=-1) 
+        grayscale = tf.expand_dims(grayscale, axis=-1)
         return grayscale
     
 ################# Ejemplo coon la base de datos MINST ######################## 

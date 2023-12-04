@@ -1,3 +1,5 @@
+# Para obtener el grafico solo tiene que correr el codigo sigiente
+
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.models import Sequential
