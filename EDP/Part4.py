@@ -46,8 +46,3 @@ plt.plot(x_eval, analytic_solu1(x_eval), color='green', linestyle='--', label='T
 plt.title('Approximation de la fonction a')
 plt.legend()
 plt.show()
-
-
-
-
-
